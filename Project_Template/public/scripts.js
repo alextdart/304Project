@@ -79,12 +79,14 @@ async function resetDemotable() {
 }
 
 // Inserts new records into the demotable.
-async function insertDemotable(event) {
+async function insertUserAllergy(event) {
     event.preventDefault();
 
     const idValue = document.getElementById('insertId').value;
-    const nameValue = document.getElementById('insertName').value;
+    const allergyValue = document.getElementById('insertAllergy').value;
+    const severityValue = document.getElementById('insertSeverity').value;
 
+    //TODO: change this /insert demotable
     const response = await fetch('/insert-demotable', {
         method: 'POST',
         headers: {
@@ -92,7 +94,8 @@ async function insertDemotable(event) {
         },
         body: JSON.stringify({
             id: idValue,
-            name: nameValue
+            allergy: allergyValue
+            severity: severityValue
         })
     });
 
@@ -106,6 +109,35 @@ async function insertDemotable(event) {
         messageElement.textContent = "Error inserting data!";
     }
 }
+
+//// Inserts new records into the demotable.
+//async function insertDemotable(event) {
+//    event.preventDefault();
+//
+//    const idValue = document.getElementById('insertId').value;
+//    const nameValue = document.getElementById('insertName').value;
+//
+//    const response = await fetch('/insert-demotable', {
+//        method: 'POST',
+//        headers: {
+//            'Content-Type': 'application/json'
+//        },
+//        body: JSON.stringify({
+//            id: idValue,
+//            name: nameValue
+//        })
+//    });
+//
+//    const responseData = await response.json();
+//    const messageElement = document.getElementById('insertResultMsg');
+//
+//    if (responseData.success) {
+//        messageElement.textContent = "Data inserted successfully!";
+//        fetchTableData();
+//    } else {
+//        messageElement.textContent = "Error inserting data!";
+//    }
+//}
 
 // Updates names in the demotable.
 async function updateNameDemotable(event) {
