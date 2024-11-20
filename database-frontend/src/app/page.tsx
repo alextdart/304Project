@@ -75,6 +75,13 @@ export default function HomePage() {
         <button onClick={handleReset}>Reset Demotable</button>
         <button onClick={handleCount}>Count Rows</button>
         {count !== null && <p>Count: {count}</p>}
+
+        <h2>Insert Values into DemoTable</h2>
+            <form id="insertDemotable">
+              ID: <input type="number" id="insertId" placeholder="Enter ID" required /> <br /><br />
+              Name: <input type="text" id="insertName" placeholder="Enter Name" maxLength={20} /> <br /><br />
+              <button onClick={handleInsert}>Insert</button> <br />
+            </form>
       </div>
   );
 }
