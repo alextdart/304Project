@@ -19,134 +19,129 @@ DROP TABLE GroceryListContainsIngredient;
 
 -- Recreate tables
 CREATE TABLE Allergy (
-    type VARCHAR(250) PRIMARY KEY
-);
-
-CREATE TABLE Client (
-    userID INTEGER PRIMARY KEY,
-    fullName VARCHAR(250),
-    country VARCHAR(250),
-    userPrefID INTEGER UNIQUE,
-    cuisine VARCHAR(250),
-    diet VARCHAR(250),
-    groceryStore VARCHAR(250)
-);
-
-CREATE TABLE UserHasAllergy (
-    allergyType VARCHAR(250),
-    userID INTEGER,
-    severity VARCHAR(250),
-    PRIMARY KEY (allergyType, userID),
-    FOREIGN KEY (allergyType) REFERENCES Allergy (type)
-        ON DELETE CASCADE,
-    FOREIGN KEY (userID) REFERENCES Client (userID)
-);
-
-CREATE TABLE PremiumUser (
-    userID INTEGER PRIMARY KEY,
-    nutritionalAdvisorName VARCHAR(250),
-    FOREIGN KEY (userID) REFERENCES Client (userID)
-);
-
-CREATE TABLE StandardUser (
-    userID INTEGER PRIMARY KEY,
-    mealPlanLimit INTEGER,
-    FOREIGN KEY (userID) REFERENCES Client (userID)
-);
-
-CREATE TABLE BudgetUser (
-    userID INTEGER PRIMARY KEY,
-    studentDiscount FLOAT,
-    FOREIGN KEY (userID) REFERENCES Client (userID)
-);
-
-CREATE TABLE UserCreatesMealPlan (
-    userID INTEGER,
-    mealPlanID INTEGER,
-    PRIMARY KEY (userID, mealPlanID),
-    FOREIGN KEY (userID) REFERENCES Client (userID),
-    FOREIGN KEY (mealPlanID) REFERENCES MealPlan (mealPlanID)
-        ON DELETE SET NULL
-);
-
-CREATE TABLE Rating (
-    ratingID INTEGER PRIMARY KEY,
-    overallRating INTEGER,
-    difficultyRating INTEGER,
-    userID INTEGER NOT NULL,
-    recipeID INTEGER NOT NULL,
-    FOREIGN KEY (userID) REFERENCES Client (userID),
-    FOREIGN KEY (recipeID) REFERENCES Recipe (ID)
-);
-
-CREATE TABLE Equipment (
-    equipmentID INTEGER PRIMARY KEY,
-    equipmentType VARCHAR(250)
-);
-
-CREATE TABLE EquipmentLocations (
-    equipmentType VARCHAR(250) PRIMARY KEY,
-    equipmentLocation VARCHAR(250)
-);
-
-CREATE TABLE Recipe (
-    ID INTEGER PRIMARY KEY,
-    name VARCHAR(250),
-    author VARCHAR(250)
-);
-
-CREATE TABLE RecipeHasIngredient (
-    recipeID INTEGER,
-    ingredientName VARCHAR(250),
-    quantity INTEGER,
-    PRIMARY KEY (recipeID, ingredientName),
-    FOREIGN KEY (recipeID) REFERENCES Recipe (ID),
-    FOREIGN KEY (ingredientName) REFERENCES Ingredient (name)
-        ON DELETE CASCADE
-);
-
-CREATE TABLE MealPlanContainsRecipe (
-    mealPlanID INTEGER,
-    recipeID INTEGER,
-    PRIMARY KEY (mealPlanID, recipeID),
-    FOREIGN KEY (mealPlanID) REFERENCES MealPlan (mealPlanID),
-    FOREIGN KEY (recipeID) REFERENCES Recipe (ID)
-        ON DELETE CASCADE
+                         type VARCHAR(250) PRIMARY KEY
 );
 
 CREATE TABLE Ingredient (
-    name VARCHAR(250) PRIMARY KEY,
-    foodGroup VARCHAR(250)
+                            name VARCHAR(250) PRIMARY KEY,
+                            foodGroup VARCHAR(250)
 );
 
 CREATE TABLE IngredientNutritionalInfo (
-    name VARCHAR(250) PRIMARY KEY,
-    calories INTEGER,
-    fat INTEGER,
-    protein INTEGER,
-    FOREIGN KEY (name) REFERENCES Ingredient (name)
+                                           name VARCHAR(250) PRIMARY KEY,
+                                           calories INTEGER,
+                                           fat INTEGER,
+                                           protein INTEGER,
+                                           FOREIGN KEY (name) REFERENCES Ingredient (name)
+);
+
+CREATE TABLE Recipe (
+                        ID INTEGER PRIMARY KEY,
+                        name VARCHAR(250),
+                        author VARCHAR(250)
+);
+
+CREATE TABLE Client (
+                        userID INTEGER PRIMARY KEY,
+                        fullName VARCHAR(250),
+                        country VARCHAR(250),
+                        userPrefID INTEGER UNIQUE,
+                        cuisine VARCHAR(250),
+                        diet VARCHAR(250),
+                        groceryStore VARCHAR(250)
+);
+
+CREATE TABLE RecipeHasIngredient (
+                                     recipeID INTEGER,
+                                     ingredientName VARCHAR(250),
+                                     quantity INTEGER,
+                                     PRIMARY KEY (recipeID, ingredientName),
+                                     FOREIGN KEY (recipeID) REFERENCES Recipe (ID),
+                                     FOREIGN KEY (ingredientName) REFERENCES Ingredient (name) ON DELETE CASCADE
+);
+
+CREATE TABLE Rating (
+                        ratingID INTEGER PRIMARY KEY,
+                        overallRating INTEGER,
+                        difficultyRating INTEGER,
+                        userID INTEGER NOT NULL,
+                        recipeID INTEGER NOT NULL,
+                        FOREIGN KEY (userID) REFERENCES Client (userID),
+                        FOREIGN KEY (recipeID) REFERENCES Recipe (ID)
+);
+
+CREATE TABLE Equipment (
+                           equipmentID INTEGER PRIMARY KEY,
+                           equipmentType VARCHAR(250)
+);
+
+CREATE TABLE EquipmentLocations (
+                                    equipmentType VARCHAR(250) PRIMARY KEY,
+                                    equipmentLocation VARCHAR(250)
 );
 
 CREATE TABLE MealPlan (
-    mealPlanID INTEGER PRIMARY KEY,
-    endDate DATE,
-    startDate DATE NOT NULL,
-    groceryListID INTEGER,
-    FOREIGN KEY (groceryListID) REFERENCES GroceryList (groceryListID)
+                          mealPlanID INTEGER PRIMARY KEY,
+                          endDate DATE,
+                          startDate DATE NOT NULL,
+                          groceryListID INTEGER,
+                          FOREIGN KEY (groceryListID) REFERENCES GroceryList (groceryListID)
+);
+
+CREATE TABLE UserHasAllergy (
+                                allergyType VARCHAR(250),
+                                userID INTEGER,
+                                severity VARCHAR(250),
+                                PRIMARY KEY (allergyType, userID),
+                                FOREIGN KEY (allergyType) REFERENCES Allergy (type) ON DELETE CASCADE,
+                                FOREIGN KEY (userID) REFERENCES Client (userID)
+);
+
+CREATE TABLE PremiumUser (
+                             userID INTEGER PRIMARY KEY,
+                             nutritionalAdvisorName VARCHAR(250),
+                             FOREIGN KEY (userID) REFERENCES Client (userID)
+);
+
+CREATE TABLE StandardUser (
+                              userID INTEGER PRIMARY KEY,
+                              mealPlanLimit INTEGER,
+                              FOREIGN KEY (userID) REFERENCES Client (userID)
+);
+
+CREATE TABLE BudgetUser (
+                            userID INTEGER PRIMARY KEY,
+                            studentDiscount FLOAT,
+                            FOREIGN KEY (userID) REFERENCES Client (userID)
+);
+
+CREATE TABLE UserCreatesMealPlan (
+                                     userID INTEGER,
+                                     mealPlanID INTEGER,
+                                     PRIMARY KEY (userID, mealPlanID),
+                                     FOREIGN KEY (userID) REFERENCES Client (userID),
+                                     FOREIGN KEY (mealPlanID) REFERENCES MealPlan (mealPlanID) ON DELETE SET NULL
+);
+
+CREATE TABLE MealPlanContainsRecipe (
+                                        mealPlanID INTEGER,
+                                        recipeID INTEGER,
+                                        PRIMARY KEY (mealPlanID, recipeID),
+                                        FOREIGN KEY (mealPlanID) REFERENCES MealPlan (mealPlanID),
+                                        FOREIGN KEY (recipeID) REFERENCES Recipe (ID) ON DELETE CASCADE
 );
 
 CREATE TABLE GroceryList (
-    groceryListID INTEGER PRIMARY KEY,
-    totalPrice INTEGER
+                             groceryListID INTEGER PRIMARY KEY,
+                             totalPrice INTEGER
 );
 
 CREATE TABLE GroceryListContainsIngredient (
-    groceryListID INTEGER,
-    ingredientName VARCHAR(250),
-    PRIMARY KEY (groceryListID, ingredientName),
-    FOREIGN KEY (groceryListID) REFERENCES GroceryList (groceryListID),
-    FOREIGN KEY (ingredientName) REFERENCES Ingredient (name)
-        ON DELETE CASCADE
+                                               groceryListID INTEGER,
+                                               ingredientName VARCHAR(250),
+                                               PRIMARY KEY (groceryListID, ingredientName),
+                                               FOREIGN KEY (groceryListID) REFERENCES GroceryList (groceryListID),
+                                               FOREIGN KEY (ingredientName) REFERENCES Ingredient (name) ON DELETE CASCADE
 );
 
 -- Insert statements
