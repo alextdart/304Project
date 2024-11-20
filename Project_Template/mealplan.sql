@@ -1,6 +1,6 @@
 DROP TABLE Allergy;
 DROP TABLE UserHasAllergy;
-DROP TABLE User;
+DROP TABLE Client;
 DROP TABLE PremiumUser;
 DROP TABLE StandardUser;
 DROP TABLE BudgetUser;
@@ -22,7 +22,7 @@ CREATE TABLE Allergy (
     type VARCHAR(250) PRIMARY KEY
 );
 
-CREATE TABLE User (
+CREATE TABLE Client (
     userID INTEGER PRIMARY KEY,
     fullName VARCHAR(250),
     country VARCHAR(250),
@@ -39,32 +39,32 @@ CREATE TABLE UserHasAllergy (
     PRIMARY KEY (allergyType, userID),
     FOREIGN KEY (allergyType) REFERENCES Allergy (type)
         ON DELETE CASCADE,
-    FOREIGN KEY (userID) REFERENCES User (userID)
+    FOREIGN KEY (userID) REFERENCES Client (userID)
 );
 
 CREATE TABLE PremiumUser (
     userID INTEGER PRIMARY KEY,
     nutritionalAdvisorName VARCHAR(250),
-    FOREIGN KEY (userID) REFERENCES User (userID)
+    FOREIGN KEY (userID) REFERENCES Client (userID)
 );
 
 CREATE TABLE StandardUser (
     userID INTEGER PRIMARY KEY,
     mealPlanLimit INTEGER,
-    FOREIGN KEY (userID) REFERENCES User (userID)
+    FOREIGN KEY (userID) REFERENCES Client (userID)
 );
 
 CREATE TABLE BudgetUser (
     userID INTEGER PRIMARY KEY,
     studentDiscount FLOAT,
-    FOREIGN KEY (userID) REFERENCES User (userID)
+    FOREIGN KEY (userID) REFERENCES Client (userID)
 );
 
 CREATE TABLE UserCreatesMealPlan (
     userID INTEGER,
     mealPlanID INTEGER,
     PRIMARY KEY (userID, mealPlanID),
-    FOREIGN KEY (userID) REFERENCES User (userID),
+    FOREIGN KEY (userID) REFERENCES Client (userID),
     FOREIGN KEY (mealPlanID) REFERENCES MealPlan (mealPlanID)
         ON DELETE SET NULL
 );
@@ -75,7 +75,7 @@ CREATE TABLE Rating (
     difficultyRating INTEGER,
     userID INTEGER NOT NULL,
     recipeID INTEGER NOT NULL,
-    FOREIGN KEY (userID) REFERENCES User (userID),
+    FOREIGN KEY (userID) REFERENCES Client (userID),
     FOREIGN KEY (recipeID) REFERENCES Recipe (ID)
 );
 
@@ -156,11 +156,11 @@ INSERT INTO Allergy (type) VALUES ('Dairy');
 INSERT INTO Allergy (type) VALUES ('Shellfish');
 INSERT INTO Allergy (type) VALUES ('Eggs');
 
-INSERT INTO User (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (1, 'Alex Dart', 'Canada', 1, 'Standard', NULL, 'Save-On Kerrisdale');
-INSERT INTO User (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (2, 'Griffin Velichko', 'Canada', 2, 'Standard', NULL, 'Save-On Dunbar');
-INSERT INTO User (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (3, 'Anna Friesen', 'Canada', 3, 'Standard', NULL, 'Save-On Wesbrook');
-INSERT INTO User (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (4, 'LeBron James', 'USA', 4, 'Standard', 'Vegan', 'Save-On Kerrisdale');
-INSERT INTO User (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (5, 'Grant Sanderson', 'USA', 5, 'Standard', NULL, 'Save-On Dunbar');
+INSERT INTO Client (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (1, 'Alex Dart', 'Canada', 1, 'Standard', NULL, 'Save-On Kerrisdale');
+INSERT INTO Client (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (2, 'Griffin Velichko', 'Canada', 2, 'Standard', NULL, 'Save-On Dunbar');
+INSERT INTO Client (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (3, 'Anna Friesen', 'Canada', 3, 'Standard', NULL, 'Save-On Wesbrook');
+INSERT INTO Client (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (4, 'LeBron James', 'USA', 4, 'Standard', 'Vegan', 'Save-On Kerrisdale');
+INSERT INTO Client (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (5, 'Grant Sanderson', 'USA', 5, 'Standard', NULL, 'Save-On Dunbar');
 
 
 INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES ('Dairy', 4, 'Severe');
