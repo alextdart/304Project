@@ -1,223 +1,193 @@
-DROP TABLE Allergy;
-DROP TABLE UserHasAllergy;
-DROP TABLE User;
-DROP TABLE PremiumUser;
-DROP TABLE StandardUser;
-DROP TABLE BudgetUser;
-DROP TABLE UserCreatesMealPlan;
-DROP TABLE Rating;
-DROP TABLE Equipment;
-DROP TABLE EquipmentLocations;
-DROP TABLE Recipe;
-DROP TABLE RecipeHasIngredient;
-DROP TABLE MealPlanContainsRecipe;
-DROP TABLE Ingredient;
-DROP TABLE MealPlan;
-DROP TABLE GroceryList;
-DROP TABLE GroceryListContainsIngredient;
+DROP TABLE IF EXISTS Allergy;
+DROP TABLE IF EXISTS UserHasAllergy;
+DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS PremiumUser;
+DROP TABLE IF EXISTS StandardUser;
+DROP TABLE IF EXISTS BudgetUser;
+DROP TABLE IF EXISTS UserCreatesMealPlan;
+DROP TABLE IF EXISTS Rating;
+DROP TABLE IF EXISTS Equipment;
+DROP TABLE IF EXISTS EquipmentLocations;
+DROP TABLE IF EXISTS Recipe;
+DROP TABLE IF EXISTS RecipeHasIngredient;
+DROP TABLE IF EXISTS MealPlanContainsRecipe;
+DROP TABLE IF EXISTS Ingredient;
+DROP TABLE IF EXISTS IngredientNutritionalInfo;
+DROP TABLE IF EXISTS MealPlan;
+DROP TABLE IF EXISTS GroceryList;
+DROP TABLE IF EXISTS GroceryListContainsIngredient;
 
-CREATE TABLE Allergy (type VARCHAR PRIMARY KEY);
+-- Recreate tables
+CREATE TABLE Allergy (
+    type VARCHAR PRIMARY KEY
+);
 
-CREATE TABLE UserHasAllergy
-(allergyType VARCHAR,
-userID INTEGER,
-severity VARCHAR,
-PRIMARY KEY (allergyType, userID),
-FOREIGN KEY allergyType REFERENCES Allergy(allergyType)
-ON DELETE CASCADE
-ON UPDATE CASCADE,
-FOREIGN KEY userID REFERENCES User(userID));
+CREATE TABLE User (
+    userID INTEGER PRIMARY KEY,
+    fullName VARCHAR,
+    country VARCHAR,
+    userPrefID INTEGER UNIQUE,
+    cuisine VARCHAR,
+    diet VARCHAR,
+    groceryStore VARCHAR
+);
 
-CREATE TABLE User
-(userID INTEGER PRIMARY KEY,
-fullName VARCHAR,
-country VARCHAR,
-userPrefID INTEGER UNIQUE,
-cuisine VARCHAR,
-diet VARCHAR,
-groceryStore VARCHAR);
+CREATE TABLE UserHasAllergy (
+    allergyType VARCHAR,
+    userID INTEGER,
+    severity VARCHAR,
+    PRIMARY KEY (allergyType, userID),
+    FOREIGN KEY (allergyType) REFERENCES Allergy (type)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (userID) REFERENCES User (userID)
+);
 
-CREATE TABLE PremiumUser
-(userID INTEGER PRIMARY KEY,
-nutritionalAdvisorName VARCHAR,
-FOREIGN KEY userID REFERENCES User(userID));
+CREATE TABLE PremiumUser (
+    userID INTEGER PRIMARY KEY,
+    nutritionalAdvisorName VARCHAR,
+    FOREIGN KEY (userID) REFERENCES User (userID)
+);
 
-CREATE TABLE StandardUser
-(userID INTEGER PRIMARY KEY,
-mealPlanLimit INTEGER,
-FOREIGN KEY userID REFERENCES User(userID));
+CREATE TABLE StandardUser (
+    userID INTEGER PRIMARY KEY,
+    mealPlanLimit INTEGER,
+    FOREIGN KEY (userID) REFERENCES User (userID)
+);
 
-CREATE TABLE BudgetUser
-(userID INTEGER PRIMARY KEY,
-studentDiscount FLOAT,
-FOREIGN KEY userID REFERENCES User(userID));
+CREATE TABLE BudgetUser (
+    userID INTEGER PRIMARY KEY,
+    studentDiscount FLOAT,
+    FOREIGN KEY (userID) REFERENCES User (userID)
+);
 
-CREATE TABLE UserCreatesMealPlan
-(userID INTEGER,
-mealPlanID INTEGER,
-PRIMARY KEY (userID, mealPlanID),
-FOREIGN KEY userID REFERENCES User(userID),
-FOREIGN KEY mealPlanID REFERENCES MealPlan(mealPlanID)
-ON DELETE SET NULL);
+CREATE TABLE UserCreatesMealPlan (
+    userID INTEGER,
+    mealPlanID INTEGER,
+    PRIMARY KEY (userID, mealPlanID),
+    FOREIGN KEY (userID) REFERENCES User (userID),
+    FOREIGN KEY (mealPlanID) REFERENCES MealPlan (mealPlanID)
+        ON DELETE SET NULL
+);
 
-CREATE TABLE Rating
-(ratingID INTEGER PRIMARY KEY,
-overallRating INTEGER,
-difficultlyRating INTEGER,
-userID INTEGER NOT NULL,
-recipeID INTEGER NOT NULL,
-FOREIGN KEY userID REFERENCES User(userID),
-FOREIGN KEY recipeID REFERENCES Recipe(ID));
+CREATE TABLE Rating (
+    ratingID INTEGER PRIMARY KEY,
+    overallRating INTEGER,
+    difficultyRating INTEGER,
+    userID INTEGER NOT NULL,
+    recipeID INTEGER NOT NULL,
+    FOREIGN KEY (userID) REFERENCES User (userID),
+    FOREIGN KEY (recipeID) REFERENCES Recipe (ID)
+);
 
-CREATE TABLE Equipment
-(equipmentID INTEGER,
-equipmentType VARCHAR,
-PRIMARY KEY (equipmentID, equipmentType));
+CREATE TABLE Equipment (
+    equipmentID INTEGER PRIMARY KEY,
+    equipmentType VARCHAR
+);
 
-CREATE TABLE EquipmentLocations
-(equipmentType VARCHAR PRIMARY KEY,
-equipmentLocation VARCHAR);
+CREATE TABLE EquipmentLocations (
+    equipmentType VARCHAR PRIMARY KEY,
+    equipmentLocation VARCHAR
+);
 
-CREATE TABLE Recipe
-(ID INTEGER PRIMARY KEY,
-name VARCHAR,
-author VARCHAR);
+CREATE TABLE Recipe (
+    ID INTEGER PRIMARY KEY,
+    name VARCHAR,
+    author VARCHAR
+);
 
-CREATE TABLE RecipeHasIngredient
-(recipeID INTEGER,
-ingredientName VARCHAR,
-quantity INTEGER,
-PRIMARY KEY (recipeID, ingredientName),
-FOREIGN KEY recipeID REFERENCES Recipe(ID),
-FOREIGN KEY ingredientName REFERENCES Ingredient(name)
-ON DELETE CASCADE);
+CREATE TABLE RecipeHasIngredient (
+    recipeID INTEGER,
+    ingredientName VARCHAR,
+    quantity INTEGER,
+    PRIMARY KEY (recipeID, ingredientName),
+    FOREIGN KEY (recipeID) REFERENCES Recipe (ID),
+    FOREIGN KEY (ingredientName) REFERENCES Ingredient (name)
+        ON DELETE CASCADE
+);
 
-CREATE TABLE MealPlanContainsRecipe
-(mealPlanID INTEGER,
-recipeID INTEGER,
-PRIMARY KEY (mealPlanID, recipeID),
-FOREIGN KEY mealPlanID REFERENCES MealPlan(mealPlanID),
-FOREIGN KEY recipeID REFERENCES Recipe(ID)
-ON DELETE CASCADE);
+CREATE TABLE MealPlanContainsRecipe (
+    mealPlanID INTEGER,
+    recipeID INTEGER,
+    PRIMARY KEY (mealPlanID, recipeID),
+    FOREIGN KEY (mealPlanID) REFERENCES MealPlan (mealPlanID),
+    FOREIGN KEY (recipeID) REFERENCES Recipe (ID)
+        ON DELETE CASCADE
+);
 
-CREATE TABLE Ingredient
-(name VARCHAR PRIMARY KEY,
-foodGroup VARCHAR);
+CREATE TABLE Ingredient (
+    name VARCHAR PRIMARY KEY,
+    foodGroup VARCHAR
+);
 
-CREATE TABLE IngredientNutritionalInfo
-(name VARCHAR,
-calories INTEGER,
-fat INTEGER,
-protein INTEGER,
-PRIMARY KEY (name, calories),
-FOREIGN KEY name REFERENCES Ingredient(name));
+CREATE TABLE IngredientNutritionalInfo (
+    name VARCHAR PRIMARY KEY,
+    calories INTEGER,
+    fat INTEGER,
+    protein INTEGER,
+    FOREIGN KEY (name) REFERENCES Ingredient (name)
+);
 
-CREATE TABLE MealPlan
-(mealPlanID INTEGER PRIMARY KEY,
-endDate DATE,
-startDate DATE NOT NULL,
-groceryListID INTEGER,
-FOREIGN KEY groceryListID REFERENCES groceryList(groceryListID));
+CREATE TABLE MealPlan (
+    mealPlanID INTEGER PRIMARY KEY,
+    endDate DATE,
+    startDate DATE NOT NULL,
+    groceryListID INTEGER,
+    FOREIGN KEY (groceryListID) REFERENCES GroceryList (groceryListID)
+);
 
-CREATE TABLE GroceryList
-(groceryListID INTEGER PRIMARY KEY,
-totalPrice INTEGER);
+CREATE TABLE GroceryList (
+    groceryListID INTEGER PRIMARY KEY,
+    totalPrice INTEGER
+);
 
-CREATE TABLE GroceryListContainsIngredient
-(groceryListID INTEGER,
-ingredientName VARCHAR,
-PRIMARY KEY (groceryListID, ingredientName),
-FOREIGN KEY groceryListID REFERENCES GroceryList(groceryListID),
-FOREIGN KEY ingredientName REFERENCES Ingredient(name)
-ON DELETE CASCADE);
+CREATE TABLE GroceryListContainsIngredient (
+    groceryListID INTEGER,
+    ingredientName VARCHAR,
+    PRIMARY KEY (groceryListID, ingredientName),
+    FOREIGN KEY (groceryListID) REFERENCES GroceryList (groceryListID),
+    FOREIGN KEY (ingredientName) REFERENCES Ingredient (name)
+        ON DELETE CASCADE
+);
 
-INSERT INTO
-Allergy (“type”)
-VALUES
-	(“Strawberry”),
-	(“Tree Nuts”),
-	(“Dairy”),
-	(“Shellfish”),
-	(“Eggs”);
+-- Insert statements
+INSERT INTO Allergy (type) VALUES
+    ('Strawberry'),
+    ('Tree Nuts'),
+    ('Dairy'),
+    ('Shellfish'),
+    ('Eggs');
 
-INSERT INTO
-UserHasAllergy (allergyType, userID, severity)
-VALUES
-	(“Dairy”, 4, “Severe”),
-	(“Strawberry”, 5, “Mild”),
-(“Eggs”, 4, “Mild”),
-(“Dairy”, 3, “Severe”),
-(“Shellfish”, 1, “Mild”);
+INSERT INTO User (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES
+    (1, 'Alex Dart', 'Canada', 1, 'Standard', NULL, 'Save-On Kerrisdale'),
+    (2, 'Griffin Velichko', 'Canada', 2, 'Standard', NULL, 'Save-On Dunbar'),
+    (3, 'Anna Friesen', 'Canada', 3, 'Standard', NULL, 'Save-On Wesbrook'),
+    (4, 'LeBron James', 'USA', 4, 'Standard', 'Vegan', 'Save-On Kerrisdale'),
+    (5, 'Grant Sanderson', 'USA', 5, 'Standard', NULL, 'Save-On Dunbar');
 
-INSERT INTO
-	User (userID, fullName, country, userPrefID, cuisine, diet, groceryStore)
-VALUES
-	(1, “Alex Dart”, “Canada”, 1, “Standard”, NULL, “Save-On Kerrisdale”),
-	(2, “Griffin Velichko”, “Canada”, 2, “Standard”, NULL, “Save-On Dunbar”),
-	(3, “Anna Friesen”, “Canada”, 3, “Standard”, NULL, “Save-On Wesbrook”),
-	(4, “LeBron James”, “USA”, 4, “Standard”, “Vegan”, “Save-On Kerrisdale”),
-	(5, “Grant Sanderson”, “USA”, 5, “Standard”, NULL, “Save-On Dunbar”);
+INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES
+    ('Dairy', 4, 'Severe'),
+    ('Strawberry', 5, 'Mild'),
+    ('Eggs', 4, 'Mild'),
+    ('Dairy', 3, 'Severe'),
+    ('Shellfish', 1, 'Mild');
 
-INSERT INTO
-PremiumUser (userID, nutritionalAdvisorName)
-VALUES
-	(1, “Gordon Ramsay”),
-	(2, “Gordon Ramsay”),
-	(3, “Gordon Ramsay”);
+INSERT INTO PremiumUser (userID, nutritionalAdvisorName) VALUES
+    (1, 'Gordon Ramsay'),
+    (2, 'Gordon Ramsay'),
+    (3, 'Gordon Ramsay');
 
-INSERT INTO
-StandardUser (userID, mealPlanLimit)
-VALUES
-	(5, 10);
-INSERT INTO
-BudgetUser (userID, studentDiscount)
-VALUES
-	(4, 0.15);
+INSERT INTO StandardUser (userID, mealPlanLimit) VALUES
+    (5, 10);
 
-INSERT INTO
-	userCreatesMealPlan (userID, mealPlanID)
-VALUES
-	(1, 1),
-	(4, 2),
-	(2, 3),
-	(4, 4),
-	(3, 5);
+INSERT INTO BudgetUser (userID, studentDiscount) VALUES
+    (4, 0.15);
 
-INSERT INTO
-	Rating (ratingID, overallRating, difficultyRating, userID, recipeID)
-VALUES
-	(1, 4, 3, 1, 2),
-	(2, 5, 2, 3, 1),
-	(3, 5, 3, 2, 1),
-	(4, 3, 4, 5, 4),
-	(5, 2, 5, 2, 3);
-
-INSERT INTO
-	Equipment (equipmentID, equipmentType)
-VALUES
-	(1, “Large Knife”),
-	(2, “Frying Pan”),
-	(3, “Oven”),
-	(4, “Spoon”),
-	(5, “Mixing Bowl”);
-
-INSERT INTO
-	EquipmentLocations (equipmentType, equipmentLocation)
-VALUES
-	(“Large Knife”, “Knife Block”),
-	(“Frying Pan”, “Cabinet”),
-	(“Oven”, “Kitchen”),
-	(“Spoon”, “Drawer”),
-	(“Mixing Bowl”, “Cabinet”);
-
-INSERT INTO
-	Recipe (ID, name, author)
-VALUES
-	(1, “Fried Chicken”, “Anthony Bourdain”),
-	(2, “Pancakes”, “Aunt Jemimah”),
-	(3, “Ratatouille”, “Remy from Ratatouille”),
-	(4, “Shrimp Fried Rice”, “A Shrimp”),
-	(5, “Chili”, “Alex Dart”);
+INSERT INTO Recipe (ID, name, author) VALUES
+    (1, 'Fried Chicken', 'Anthony Bourdain'),
+    (2, 'Pancakes', 'Aunt Jemimah'),
+    (3, 'Ratatouille', 'Remy from Ratatouille'),
+    (4, 'Shrimp Fried Rice', 'A Shrimp'),
+    (5, 'Chili', 'Alex Dart');
 
 INSERT INTO
 	RecipeHasIngredient (recipeID, ingredientName, quantity)
@@ -300,5 +270,4 @@ VALUES
 	(4, “Shrimp”),
 	(4, “Rice”),
 	(5, “Ground Beef”);
-
 
