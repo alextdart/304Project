@@ -1,50 +1,50 @@
-DROP TABLE IF EXISTS Allergy;
-DROP TABLE IF EXISTS UserHasAllergy;
-DROP TABLE IF EXISTS User;
-DROP TABLE IF EXISTS PremiumUser;
-DROP TABLE IF EXISTS StandardUser;
-DROP TABLE IF EXISTS BudgetUser;
-DROP TABLE IF EXISTS UserCreatesMealPlan;
-DROP TABLE IF EXISTS Rating;
-DROP TABLE IF EXISTS Equipment;
-DROP TABLE IF EXISTS EquipmentLocations;
-DROP TABLE IF EXISTS Recipe;
-DROP TABLE IF EXISTS RecipeHasIngredient;
-DROP TABLE IF EXISTS MealPlanContainsRecipe;
-DROP TABLE IF EXISTS Ingredient;
-DROP TABLE IF EXISTS IngredientNutritionalInfo;
-DROP TABLE IF EXISTS MealPlan;
-DROP TABLE IF EXISTS GroceryList;
-DROP TABLE IF EXISTS GroceryListContainsIngredient;
+DROP TABLE Allergy;
+DROP TABLE UserHasAllergy;
+DROP TABLE User;
+DROP TABLE PremiumUser;
+DROP TABLE StandardUser;
+DROP TABLE BudgetUser;
+DROP TABLE UserCreatesMealPlan;
+DROP TABLE Rating;
+DROP TABLE Equipment;
+DROP TABLE EquipmentLocations;
+DROP TABLE Recipe;
+DROP TABLE RecipeHasIngredient;
+DROP TABLE MealPlanContainsRecipe;
+DROP TABLE Ingredient;
+DROP TABLE IngredientNutritionalInfo;
+DROP TABLE MealPlan;
+DROP TABLE GroceryList;
+DROP TABLE GroceryListContainsIngredient;
 
 -- Recreate tables
 CREATE TABLE Allergy (
-    type VARCHAR PRIMARY KEY
+    type VARCHAR(250) PRIMARY KEY
 );
 
 CREATE TABLE User (
     userID INTEGER PRIMARY KEY,
-    fullName VARCHAR,
-    country VARCHAR,
+    fullName VARCHAR(250),
+    country VARCHAR(250),
     userPrefID INTEGER UNIQUE,
-    cuisine VARCHAR,
-    diet VARCHAR,
-    groceryStore VARCHAR
+    cuisine VARCHAR(250),
+    diet VARCHAR(250),
+    groceryStore VARCHAR(250)
 );
 
 CREATE TABLE UserHasAllergy (
-    allergyType VARCHAR,
+    allergyType VARCHAR(250),
     userID INTEGER,
-    severity VARCHAR,
+    severity VARCHAR(250),
     PRIMARY KEY (allergyType, userID),
     FOREIGN KEY (allergyType) REFERENCES Allergy (type)
-        ON DELETE CASCADE ON UPDATE CASCADE,
+        ON DELETE CASCADE,
     FOREIGN KEY (userID) REFERENCES User (userID)
 );
 
 CREATE TABLE PremiumUser (
     userID INTEGER PRIMARY KEY,
-    nutritionalAdvisorName VARCHAR,
+    nutritionalAdvisorName VARCHAR(250),
     FOREIGN KEY (userID) REFERENCES User (userID)
 );
 
@@ -81,23 +81,23 @@ CREATE TABLE Rating (
 
 CREATE TABLE Equipment (
     equipmentID INTEGER PRIMARY KEY,
-    equipmentType VARCHAR
+    equipmentType VARCHAR(250)
 );
 
 CREATE TABLE EquipmentLocations (
-    equipmentType VARCHAR PRIMARY KEY,
-    equipmentLocation VARCHAR
+    equipmentType VARCHAR(250) PRIMARY KEY,
+    equipmentLocation VARCHAR(250)
 );
 
 CREATE TABLE Recipe (
     ID INTEGER PRIMARY KEY,
-    name VARCHAR,
-    author VARCHAR
+    name VARCHAR(250),
+    author VARCHAR(250)
 );
 
 CREATE TABLE RecipeHasIngredient (
     recipeID INTEGER,
-    ingredientName VARCHAR,
+    ingredientName VARCHAR(250),
     quantity INTEGER,
     PRIMARY KEY (recipeID, ingredientName),
     FOREIGN KEY (recipeID) REFERENCES Recipe (ID),
@@ -115,12 +115,12 @@ CREATE TABLE MealPlanContainsRecipe (
 );
 
 CREATE TABLE Ingredient (
-    name VARCHAR PRIMARY KEY,
-    foodGroup VARCHAR
+    name VARCHAR(250) PRIMARY KEY,
+    foodGroup VARCHAR(250)
 );
 
 CREATE TABLE IngredientNutritionalInfo (
-    name VARCHAR PRIMARY KEY,
+    name VARCHAR(250) PRIMARY KEY,
     calories INTEGER,
     fat INTEGER,
     protein INTEGER,
@@ -142,7 +142,7 @@ CREATE TABLE GroceryList (
 
 CREATE TABLE GroceryListContainsIngredient (
     groceryListID INTEGER,
-    ingredientName VARCHAR,
+    ingredientName VARCHAR(250),
     PRIMARY KEY (groceryListID, ingredientName),
     FOREIGN KEY (groceryListID) REFERENCES GroceryList (groceryListID),
     FOREIGN KEY (ingredientName) REFERENCES Ingredient (name)
@@ -150,124 +150,106 @@ CREATE TABLE GroceryListContainsIngredient (
 );
 
 -- Insert statements
-INSERT INTO Allergy (type) VALUES
-    ('Strawberry'),
-    ('Tree Nuts'),
-    ('Dairy'),
-    ('Shellfish'),
-    ('Eggs');
+INSERT INTO Allergy (type) VALUES ('Strawberry');
+INSERT INTO Allergy (type) VALUES ('Tree Nuts');
+INSERT INTO Allergy (type) VALUES ('Dairy');
+INSERT INTO Allergy (type) VALUES ('Shellfish');
+INSERT INTO Allergy (type) VALUES ('Eggs');
 
-INSERT INTO User (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES
-    (1, 'Alex Dart', 'Canada', 1, 'Standard', NULL, 'Save-On Kerrisdale'),
-    (2, 'Griffin Velichko', 'Canada', 2, 'Standard', NULL, 'Save-On Dunbar'),
-    (3, 'Anna Friesen', 'Canada', 3, 'Standard', NULL, 'Save-On Wesbrook'),
-    (4, 'LeBron James', 'USA', 4, 'Standard', 'Vegan', 'Save-On Kerrisdale'),
-    (5, 'Grant Sanderson', 'USA', 5, 'Standard', NULL, 'Save-On Dunbar');
+INSERT INTO User (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (1, 'Alex Dart', 'Canada', 1, 'Standard', NULL, 'Save-On Kerrisdale');
+INSERT INTO User (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (2, 'Griffin Velichko', 'Canada', 2, 'Standard', NULL, 'Save-On Dunbar');
+INSERT INTO User (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (3, 'Anna Friesen', 'Canada', 3, 'Standard', NULL, 'Save-On Wesbrook');
+INSERT INTO User (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (4, 'LeBron James', 'USA', 4, 'Standard', 'Vegan', 'Save-On Kerrisdale');
+INSERT INTO User (userID, fullName, country, userPrefID, cuisine, diet, groceryStore) VALUES (5, 'Grant Sanderson', 'USA', 5, 'Standard', NULL, 'Save-On Dunbar');
 
-INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES
-    ('Dairy', 4, 'Severe'),
-    ('Strawberry', 5, 'Mild'),
-    ('Eggs', 4, 'Mild'),
-    ('Dairy', 3, 'Severe'),
-    ('Shellfish', 1, 'Mild');
 
-INSERT INTO PremiumUser (userID, nutritionalAdvisorName) VALUES
-    (1, 'Gordon Ramsay'),
-    (2, 'Gordon Ramsay'),
-    (3, 'Gordon Ramsay');
+INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES ('Dairy', 4, 'Severe');
+INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES ('Strawberry', 5, 'Mild');
+INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES ('Eggs', 4, 'Mild');
+INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES ('Dairy', 3, 'Severe');
+INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES ('Shellfish', 1, 'Mild');
 
-INSERT INTO StandardUser (userID, mealPlanLimit) VALUES
-    (5, 10);
 
-INSERT INTO BudgetUser (userID, studentDiscount) VALUES
-    (4, 0.15);
+INSERT INTO PremiumUser (userID, nutritionalAdvisorName) VALUES (1, 'Gordon Ramsay');
+INSERT INTO PremiumUser (userID, nutritionalAdvisorName) VALUES (2, 'Gordon Ramsay');
+INSERT INTO PremiumUser (userID, nutritionalAdvisorName) VALUES (3, 'Gordon Ramsay');
 
-INSERT INTO Recipe (ID, name, author) VALUES
-    (1, 'Fried Chicken', 'Anthony Bourdain'),
-    (2, 'Pancakes', 'Aunt Jemimah'),
-    (3, 'Ratatouille', 'Remy from Ratatouille'),
-    (4, 'Shrimp Fried Rice', 'A Shrimp'),
-    (5, 'Chili', 'Alex Dart');
 
-INSERT INTO
-	RecipeHasIngredient (recipeID, ingredientName, quantity)
-VALUES
-	(1, “Chicken”, 5),
-	(2, “Pancake Mix”, 3),
-	(3, “Onion”, 2),
-	(4, “Shrimp”, 3),
-	(5, “Ground Beef”, 5),
-	(1, “Oil”, 10),
-	(2, “Water”, 3),
-	(3, “Tomato”, 2),
-	(4, “Rice”, 5),
-	(5, “Diced Tomato”, 7);
+INSERT INTO StandardUser (userID, mealPlanLimit) VALUES (5, 10);
 
-INSERT INTO
-	MealPlanContainsRecipe (mealPlanID, recipeID)
-VALUES
-	(1, 1),
-	(1, 2),
-	(1, 3),
-	(2, 2),
-	(3, 5);
 
-INSERT INTO
-	Ingredient (name, foodGroup)
-VALUES
-	(“Chicken”, “Meat”),
-	(“Pancake Mix”, “Assorted”),
-	(“Onion”, “Vegetable”),
-	(“Shrimp”, “Seafood”),
-	(“Ground Beef”, “Meat”),
-	(“Oil”, “Liquids”),
-	(“Water”, “Liquids”),
-	(“Tomato”, “Vegetable”),
-	(“Rice”, “Starches”),
-	(“Diced Tomato”, “Vegetable”);
+INSERT INTO BudgetUser (userID, studentDiscount) VALUES  (4, 0.15);
 
-INSERT INTO
-	IngredientNutritionalInfo (name, calories, fat, protein)
-VALUES
-	(“Chicken”, 100, 12, 15),
-	(“Pancake Mix”, 150, 22, 2),
-	(“Onion”, 75, 0, 1),
-	(“Shrimp”, 125, 17, 13),
-	(“Ground Beef”, 135, 10, 22),
-	(“Oil”, 430, 26, 1),
-	(“Water”, 0, 0, 0),
-	(“Tomato”, 55, 1, 0),
-	(“Rice”, 175, 13, 2),
-	(“Diced Tomato”, 55, 1, 0);
+INSERT INTO Recipe (ID, name, author) VALUES (1, 'Fried Chicken', 'Anthony Bourdain');
+INSERT INTO Recipe (ID, name, author) VALUES (2, 'Pancakes', 'Aunt Jemimah');
+INSERT INTO Recipe (ID, name, author) VALUES (3, 'Ratatouille', 'Remy from Ratatouille');
+INSERT INTO Recipe (ID, name, author) VALUES (4, 'Shrimp Fried Rice', 'A Shrimp');
+INSERT INTO Recipe (ID, name, author) VALUES (5, 'Chili', 'Alex Dart');
 
-INSERT INTO
-	MealPlan (mealPlanID, endDate, startDate, groceryListID)
-VALUES
-	(1, 2024-10-14, 2024-10-21, 1),
-	(2, 2024-10-14, 2024-10-21, 2),
-	(3, 2024-10-14, 2024-10-21, 3),
-	(4, 2024-10-17, 2024-10-24, 4),
-	(5, 2024-10-19, 2024-10-26, 5);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (1, 'Chicken', 5);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (2, 'Pancake Mix', 3);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (3, 'Onion', 2);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (4, 'Shrimp', 3);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (5, 'Ground Beef', 5);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (1, 'Oil', 10);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (2, 'Water', 3);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (3, 'Tomato', 2);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (4, 'Rice', 5);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (5, 'Diced Tomato', 7);
 
-INSERT INTO
-	GroceryList (groceryListID, totalPrice)
-VALUES
-	(1, 21),
-	(2, 33),
-	(3, 24),
-	(4, 56),
-	(5, 13);
+INSERT INTO Ingredient (name, foodGroup) VALUES ('Chicken', 'Meat');
+INSERT INTO Ingredient (name, foodGroup) VALUES ('Pancake Mix', 'Assorted');
+INSERT INTO Ingredient (name, foodGroup) VALUES ('Onion', 'Vegetable');
+INSERT INTO Ingredient (name, foodGroup) VALUES ('Shrimp', 'Seafood');
+INSERT INTO Ingredient (name, foodGroup) VALUES ('Ground Beef', 'Meat');
+INSERT INTO Ingredient (name, foodGroup) VALUES ('Oil', 'Liquids');
+INSERT INTO Ingredient (name, foodGroup) VALUES ('Water', 'Liquids');
+INSERT INTO Ingredient (name, foodGroup) VALUES ('Tomato', 'Vegetable');
+INSERT INTO Ingredient (name, foodGroup) VALUES ('Rice', 'Starches');
+INSERT INTO Ingredient (name, foodGroup) VALUES ('Diced Tomato', 'Vegetable');
 
-INSERT INTO
-	GroceryListContainsIngredient (groceryListID, ingredientName)
-VALUES
-	(1, “Chicken”),
-	(1, “Oil”),
-	(2, “Pancake Mix”),
-	(2, “Water”),
-	(3, “Onion”),
-	(3, “Tomato”),
-	(4, “Shrimp”),
-	(4, “Rice”),
-	(5, “Ground Beef”);
+
+INSERT INTO MealPlanContainsRecipe (mealPlanID, recipeID) VALUES (1, 1);
+INSERT INTO MealPlanContainsRecipe (mealPlanID, recipeID) VALUES (1, 2);
+INSERT INTO MealPlanContainsRecipe (mealPlanID, recipeID) VALUES (2, 3);
+INSERT INTO MealPlanContainsRecipe (mealPlanID, recipeID) VALUES (2, 2);
+INSERT INTO MealPlanContainsRecipe (mealPlanID, recipeID) VALUES (3, 5);
+
+
+INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Chicken', 100, 12, 15);
+INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Pancake Mix', 150, 22, 2);
+INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Onion', 75, 0, 1);
+INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Shrimp', 125, 17, 13);
+INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Ground Beef', 135, 10, 22);
+INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Oil', 430, 26, 1);
+INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Water', 0, 0, 0);
+INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Tomato', 55, 1, 0);
+INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Rice', 175, 13, 2);
+INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Diced Tomato', 55, 1, 0);
+
+INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (1, TO_DATE('2024-10-14', 'YYYY-MM-DD'), TO_DATE('2024-10-21', 'YYYY-MM-DD'), 1);
+INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (2, TO_DATE('2024-10-14', 'YYYY-MM-DD'), TO_DATE('2024-10-21', 'YYYY-MM-DD'), 2);
+INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (3, TO_DATE('2024-10-14', 'YYYY-MM-DD'), TO_DATE('2024-10-21', 'YYYY-MM-DD'), 3);
+INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (4, TO_DATE('2024-10-17', 'YYYY-MM-DD'), TO_DATE('2024-10-24', 'YYYY-MM-DD'), 4);
+INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (5, TO_DATE('2024-10-19', 'YYYY-MM-DD'), TO_DATE('2024-10-26', 'YYYY-MM-DD'), 5);
+
+
+INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (1, 21);
+INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (2, 33);
+INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (3, 24);
+INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (4, 56);
+INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (5, 13);
+
+
+INSERT INTO GroceryListContainsIngredient (groceryListID, ingredientName) VALUES (1, 'Chicken');
+INSERT INTO GroceryListContainsIngredient (groceryListID, ingredientName) VALUES (1, 'Oil');
+INSERT INTO GroceryListContainsIngredient (groceryListID, ingredientName) VALUES (2, 'Pancake Mix');
+INSERT INTO GroceryListContainsIngredient (groceryListID, ingredientName) VALUES (2, 'Water');
+INSERT INTO GroceryListContainsIngredient (groceryListID, ingredientName) VALUES (3, 'Onion');
+INSERT INTO GroceryListContainsIngredient (groceryListID, ingredientName) VALUES (3, 'Tomato');
+INSERT INTO GroceryListContainsIngredient (groceryListID, ingredientName) VALUES (4, 'Shrimp');
+INSERT INTO GroceryListContainsIngredient (groceryListID, ingredientName) VALUES (4, 'Rice');
+INSERT INTO GroceryListContainsIngredient (groceryListID, ingredientName) VALUES (5, 'Ground Beef');
+
+
 
