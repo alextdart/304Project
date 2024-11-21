@@ -142,11 +142,95 @@ async function countDemotable() {
     });
 }
 
+// deletes specified MealPlan
+async function deleteMealPlan(mealplanID) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`
+            DELETE 
+            FROM MEALPLAN 
+            WHERE MEALPLANID = ${mealplanID}
+        `);
+        return true
+    }).catch(() => {
+        console.log("Failed to delete Meal Plan with ID: ${mealplanID}");
+        return false;
+    });
+}
+
+// gets all recipes with total calories over a given number. Returns list of Recipe Names.
+async function getRecipesWithCaloriesOver(calories) {
+    return await oracledb(async (connection) => {
+        return await connection.execute(`
+            SELECT r.NAME, SUM(rhi.QUANTITY * ini.CALORIES) AS TotalCalories
+            FROM RECIPE r 
+                JOIN RECIPEHASINGREDIENT rhi ON r.ID = rhi.RECIPEID 
+                JOIN INGREDIENTNUTRITIONALINFO ini ON rhi.INGREDIENTNAME = ini.NAME
+            GROUP BY r.NAME
+            HAVING SUM(rhi.QUANTITY * ini.CALORIES) > ${calories};
+        `);
+    }).catch(() => {
+        console.log(`Failed to get recipes with calories over ${calories}`);
+        return [];
+    });
+}
+
+// gets meal plan created by a given user
+async function getMealPlansCreatedBy(userID) {
+    return await oracledb(async (connection) => {
+        return await connection.execute(`
+            SELECT mp.*
+            FROM MEALPLAN mp, USERCREATESMEALPLAN ucmp
+            WHERE mp.MEALPLANID = ucmp.MEALPLANID AND ucmp.USERID = ${userID}
+        `);
+    }).catch(() => {
+        console.log(`Failed to get Meal Plans Created By User with ID: ${userID}`);
+        return [];
+    })
+}
+
+// gets ingredients in a grocery list assosciated with a mealPlan.
+async function getIngredientsInGroceryListAssosciatedWith(mealPlanID) {
+    return await oracledb(async (connection) => {
+        return await connection.execute(`
+            SELECT gci.INGREDIENTNAME 
+            FROM GROCERYLISTCONTAINSINGREDIENT gci, MEALPLAN mp
+            WHERE mp.MEALPLANID = ${mealPlanID} AND mp.GROCERYLISTID = gci.GROCERYLISTID
+        `);
+    }).catch(() => {
+        console.log(`Failed to get Ingredients in the Grocery List Assosciated with MealPlanID: ${mealPlanID}`);
+        return []
+    });
+}
+
+// gets all the sums of the nutritional info of all of the ingredients in a recipe
+async function getTotalNutrionalInfoInRecipe(recipeID) {
+    return await oracledb(async (connection) => {
+        const result = await connection.execute(`
+            SELECT r.NAME, SUM(rhi.QUANTITY * ini.CALORIES) AS TotalCalories, SUM(rhi.QUANTITY * ini.FAT) AS TotalFat, 
+                   SUM(rhi.QUANTITY * ini.FAT) AS TotalProtein
+            FROM RECIPE r 
+                JOIN RECIPEHASINGREDIENT rhi ON r.ID = rhi.RECIPEID 
+                JOIN INGREDIENTNUTRITIONALINFO ini ON rhi.INGREDIENTNAME = ini.NAME
+            WHERE r.ID = ${recipeID}
+            GROUP BY r.NAME;
+        `);
+        return result;
+    }).catch(() => {
+        console.log(`Failed to get total nutrional info in recipe with ID: ${recipeID}`);
+        return 0;
+    })
+}
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
     initiateDemotable, 
     insertDemotable, 
     updateNameDemotable, 
-    countDemotable
+    countDemotable,
+    deleteMealPlan,
+    getRecipesWithCaloriesOver,
+    getMealPlansCreatedBy,
+    getIngredientsInGroceryListAssosciatedWith,
+    getTotalNutrionalInfoInRecipe
 };
