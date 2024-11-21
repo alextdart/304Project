@@ -142,6 +142,7 @@ async function countDemotable() {
     });
 }
 
+// deletes specified MealPlan
 async function deleteMealPlan(mealplanID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(`
@@ -173,6 +174,7 @@ async function getRecipesWithCaloriesOver(calories) {
     });
 }
 
+// gets meal plan created by a given user
 async function getMealPlansCreatedBy(userID) {
     return await oracledb(async (connection) => {
         return await connection.execute(`
@@ -186,6 +188,7 @@ async function getMealPlansCreatedBy(userID) {
     })
 }
 
+// gets ingredients in a grocery list assosciated with a mealPlan.
 async function getIngredientsInGroceryListAssosciatedWith(mealPlanID) {
     return await oracledb(async (connection) => {
         return await connection.execute(`
@@ -199,6 +202,7 @@ async function getIngredientsInGroceryListAssosciatedWith(mealPlanID) {
     });
 }
 
+// gets all the sums of the nutritional info of all of the ingredients in a recipe
 async function getTotalNutrionalInfoInRecipe(recipeID) {
     return await oracledb(async (connection) => {
         const result = await connection.execute(`
