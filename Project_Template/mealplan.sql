@@ -101,7 +101,7 @@ CREATE TABLE MealPlan
     endDate       DATE,
     startDate     DATE NOT NULL,
     groceryListID INTEGER,
-    FOREIGN KEY (groceryListID) REFERENCES GroceryList (groceryListID)
+    FOREIGN KEY (groceryListID) REFERENCES GroceryList (groceryListID) ON DELETE SET NULL
 );
 
 CREATE TABLE UserHasAllergy
@@ -141,7 +141,7 @@ CREATE TABLE UserCreatesMealPlan
     mealPlanID INTEGER,
     PRIMARY KEY (userID, mealPlanID),
     FOREIGN KEY (userID) REFERENCES Client (userID),
-    FOREIGN KEY (mealPlanID) REFERENCES MealPlan (mealPlanID) ON DELETE SET NULL
+    FOREIGN KEY (mealPlanID) REFERENCES MealPlan (mealPlanID) ON DELETE CASCADE
 );
 
 CREATE TABLE MealPlanContainsRecipe
@@ -149,7 +149,7 @@ CREATE TABLE MealPlanContainsRecipe
     mealPlanID INTEGER,
     recipeID   INTEGER,
     PRIMARY KEY (mealPlanID, recipeID),
-    FOREIGN KEY (mealPlanID) REFERENCES MealPlan (mealPlanID),
+    FOREIGN KEY (mealPlanID) REFERENCES MealPlan (mealPlanID) ON DELETE CASCADE,
     FOREIGN KEY (recipeID) REFERENCES Recipe (ID) ON DELETE CASCADE
 );
 
