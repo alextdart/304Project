@@ -105,6 +105,17 @@ async function initiateDemotable() {
     });
 }
 
+async function deleteMealPlan(mealplanID) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`
+            DELETE FROM MEALPLAN WHERE MEALPLANID = ${mealplanID}
+        `);
+        return true
+    }).catch(() => {
+        return false;
+    });
+}
+
 async function insertDemotable(id, name) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
