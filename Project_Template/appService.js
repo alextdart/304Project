@@ -176,17 +176,24 @@ async function getRecipesWithCaloriesOver(calories) {
 
 // gets meal plan created by a given user
 async function getMealPlansCreatedBy(userID) {
+    const userIdAsNumber = Number(userID);
+    if (isNaN(userIdAsNumber)) {
+        console.error(`Invalid userID: ${userID}`);
+        return [];
+    }
+
     return await oracledb(async (connection) => {
         return await connection.execute(`
             SELECT mp.*
             FROM MEALPLAN mp, USERCREATESMEALPLAN ucmp
-            WHERE mp.MEALPLANID = ucmp.MEALPLANID AND ucmp.USERID = ${userID}
-        `);
+            WHERE mp.MEALPLANID = ucmp.MEALPLANID AND ucmp.USERID = ${userIdAsNumber}
+            `);
     }).catch(() => {
-        console.log(`Failed to get Meal Plans Created By User with ID: ${userID}`);
+        console.error(`Failed to get Meal Plans Created By User with ID: ${userIdAsNumber}`);
         return [];
-    })
+    });
 }
+
 
 // gets ingredients in a grocery list assosciated with a mealPlan.
 async function getIngredientsInGroceryListAssosciatedWith(mealPlanID) {
