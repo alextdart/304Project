@@ -119,6 +119,21 @@ async function insertDemotable(id, name) {
     });
 }
 
+
+async function insertIngredient(id, name, quantity) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (:id, :name, :quantity)`,
+            [id, name, quantity],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 async function updateNameDemotable(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -146,7 +161,8 @@ module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
     initiateDemotable, 
-    insertDemotable, 
+    insertDemotable,
+    insertIngredient,
     updateNameDemotable, 
     countDemotable
 };

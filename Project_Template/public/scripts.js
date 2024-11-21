@@ -107,6 +107,37 @@ async function insertDemotable(event) {
     }
 }
 
+// Inserts new ingredient into a recipe in RecipeHasIngredient table.
+async function insertRecipeHasIngredient(event) {
+    event.preventDefault();
+
+    const idValue = document.getElementById('insertRecipeID').value;
+    const nameValue = document.getElementById('insertIngredientName').value;
+    const quantityValue = document.getElementById('insertQuantity').value;
+
+    const response = await fetch('/insert-recipehasingredient', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            recipeID: idValue,
+            ingredientName: nameValue,
+            quantity: quantityValue
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('insertIngredientResultMsg');
+
+    if (responseData.success) {
+        messageElement.textContent = "Ingredient inserted successfully!";
+        fetchTableData();
+    } else {
+        messageElement.textContent = "Error inserting data!";
+    }
+}
+
 // Updates names in the demotable.
 async function updateNameDemotable(event) {
     event.preventDefault();
@@ -163,6 +194,7 @@ window.onload = function() {
     fetchTableData();
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
+    document.getElementById("insertIngredient").addEventListener("submit", insertRecipeHasIngredient);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
