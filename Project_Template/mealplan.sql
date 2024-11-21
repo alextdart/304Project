@@ -199,17 +199,6 @@ INSERT INTO Recipe (ID, name, author) VALUES (3, 'Ratatouille', 'Remy from Ratat
 INSERT INTO Recipe (ID, name, author) VALUES (4, 'Shrimp Fried Rice', 'A Shrimp');
 INSERT INTO Recipe (ID, name, author) VALUES (5, 'Chili', 'Alex Dart');
 
-INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (1, 'Chicken', 5);
-INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (2, 'Pancake Mix', 3);
-INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (3, 'Onion', 2);
-INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (4, 'Shrimp', 3);
-INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (5, 'Ground Beef', 5);
-INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (1, 'Oil', 10);
-INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (2, 'Water', 3);
-INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (3, 'Tomato', 2);
-INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (4, 'Rice', 5);
-INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (5, 'Diced Tomato', 7);
-
 INSERT INTO Ingredient (name, foodGroup) VALUES ('Chicken', 'Meat');
 INSERT INTO Ingredient (name, foodGroup) VALUES ('Pancake Mix', 'Assorted');
 INSERT INTO Ingredient (name, foodGroup) VALUES ('Onion', 'Vegetable');
@@ -221,13 +210,34 @@ INSERT INTO Ingredient (name, foodGroup) VALUES ('Tomato', 'Vegetable');
 INSERT INTO Ingredient (name, foodGroup) VALUES ('Rice', 'Starches');
 INSERT INTO Ingredient (name, foodGroup) VALUES ('Diced Tomato', 'Vegetable');
 
+INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (1, 21);
+INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (2, 33);
+INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (3, 24);
+INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (4, 56);
+INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (5, 13);
+
+INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (1, TO_DATE('2024-10-14', 'YYYY-MM-DD'), TO_DATE('2024-10-21', 'YYYY-MM-DD'), 1);
+INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (2, TO_DATE('2024-10-14', 'YYYY-MM-DD'), TO_DATE('2024-10-21', 'YYYY-MM-DD'), 2);
+INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (3, TO_DATE('2024-10-14', 'YYYY-MM-DD'), TO_DATE('2024-10-21', 'YYYY-MM-DD'), 3);
+INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (4, TO_DATE('2024-10-17', 'YYYY-MM-DD'), TO_DATE('2024-10-24', 'YYYY-MM-DD'), 4);
+INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (5, TO_DATE('2024-10-19', 'YYYY-MM-DD'), TO_DATE('2024-10-26', 'YYYY-MM-DD'), 5);
+
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (1, 'Chicken', 5);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (2, 'Pancake Mix', 3);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (3, 'Onion', 2);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (4, 'Shrimp', 3);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (5, 'Ground Beef', 5);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (1, 'Oil', 10);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (2, 'Water', 3);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (3, 'Tomato', 2);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (4, 'Rice', 5);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (5, 'Diced Tomato', 7);
 
 INSERT INTO MealPlanContainsRecipe (mealPlanID, recipeID) VALUES (1, 1);
 INSERT INTO MealPlanContainsRecipe (mealPlanID, recipeID) VALUES (1, 2);
 INSERT INTO MealPlanContainsRecipe (mealPlanID, recipeID) VALUES (2, 3);
 INSERT INTO MealPlanContainsRecipe (mealPlanID, recipeID) VALUES (2, 2);
 INSERT INTO MealPlanContainsRecipe (mealPlanID, recipeID) VALUES (3, 5);
-
 
 INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Chicken', 100, 12, 15);
 INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Pancake Mix', 150, 22, 2);
@@ -239,20 +249,6 @@ INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Wa
 INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Tomato', 55, 1, 0);
 INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Rice', 175, 13, 2);
 INSERT INTO IngredientNutritionalInfo (name, calories, fat, protein) VALUES ('Diced Tomato', 55, 1, 0);
-
-INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (1, TO_DATE('2024-10-14', 'YYYY-MM-DD'), TO_DATE('2024-10-21', 'YYYY-MM-DD'), 1);
-INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (2, TO_DATE('2024-10-14', 'YYYY-MM-DD'), TO_DATE('2024-10-21', 'YYYY-MM-DD'), 2);
-INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (3, TO_DATE('2024-10-14', 'YYYY-MM-DD'), TO_DATE('2024-10-21', 'YYYY-MM-DD'), 3);
-INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (4, TO_DATE('2024-10-17', 'YYYY-MM-DD'), TO_DATE('2024-10-24', 'YYYY-MM-DD'), 4);
-INSERT INTO MealPlan (mealPlanID, endDate, startDate, groceryListID) VALUES (5, TO_DATE('2024-10-19', 'YYYY-MM-DD'), TO_DATE('2024-10-26', 'YYYY-MM-DD'), 5);
-
-
-INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (1, 21);
-INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (2, 33);
-INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (3, 24);
-INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (4, 56);
-INSERT INTO GroceryList (groceryListID, totalPrice) VALUES (5, 13);
-
 
 INSERT INTO GroceryListContainsIngredient (groceryListID, ingredientName) VALUES (1, 'Chicken');
 INSERT INTO GroceryListContainsIngredient (groceryListID, ingredientName) VALUES (1, 'Oil');
