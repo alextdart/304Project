@@ -64,5 +64,54 @@ router.get('/count-demotable', async (req, res) => {
     }
 });
 
+router.delete('/meal-plan', async(req, res) => {
+    const {mealPlanID} = req.body;
+    const result = await appService.deleteMealPlan(mealPlanID);
+    if (result) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.get('/recipe/calories', async (req, res) => {
+    const { calories } = req.query; // Use query parameters
+    try {
+        const result = await appService.getRecipesWithCaloriesOver(calories);
+        res.json({ data: result });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.get('/meal-plan/:userID', async (req, res) => {
+    const { userID } = req.params; // Use path parameters
+    try {
+        const result = await appService.getMealPlansCreatedBy(userID);
+        res.json({ data: result });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.get('/grocery-list/:mealplanID', async (req, res) => {
+    const { mealplanID } = req.params;
+    try {
+        const result = await appService.getIngredientsInGroceryListAssosciatedWith(mealplanID);
+        res.json({ data: result });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.get('/recipe/nutritional-info/:recipeID', async (req, res) => {
+    const { recipeID } = req.params;
+    try {
+        const result = await appService.getTotalNutrionalInfoInRecipe(recipeID);
+        res.json({ data: result });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+})
 
 module.exports = router;
