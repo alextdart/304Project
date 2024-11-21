@@ -93,6 +93,7 @@ async function initiateDemotable() {
             console.log('Table might not exist, proceeding to create...');
         }
 
+        //TODO: initialize table
         const result = await connection.execute(`
             CREATE TABLE DEMOTABLE (
                 id NUMBER PRIMARY KEY,

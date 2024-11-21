@@ -49,10 +49,26 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2> Insert Values into DemoTable </h2>
-    <form id="insertDemotable">
-        ID: <input type="number" id="insertId" placeholder="Enter ID" required> <br><br>
-        Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20"> <br><br>
+<!--    <h2> Insert Values into DemoTable </h2>-->
+<!--    <form id="insertDemotable">-->
+<!--        ID: <input type="number" id="insertId" placeholder="Enter ID" required> <br><br>-->
+<!--        Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20"> <br><br>-->
+
+<!--        <button type="submit"> insert </button> <br>-->
+<!--    </form>-->
+<!--    <div id="insertResultMsg"></div>-->
+
+    <h2> Insert User Allergies </h2>
+    <form id="insertUserAllergy">
+        ID: <input type="number" id="insertId" placeholder="Enter UserID" required> <br><br>
+        Allergy: <input type="text" id="insertAllergy" placeholder="Enter Allergy" maxlength="20" required> <br><br>
+        Severity:
+        <select id="insertSeverity">
+            <option value="" disabled selected>Select Severity</option>
+            <option value="Mild">Mild</option>
+            <option value="Moderate">Moderate</option>
+            <option value="Severe">Severe</option>
+        </select> <br><br>
 
         <button type="submit"> insert </button> <br>
     </form>
