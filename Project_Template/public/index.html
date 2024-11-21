@@ -49,32 +49,16 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-<!--    <h2> Insert Values into DemoTable </h2>-->
-<!--    <form id="insertDemotable">-->
-<!--        ID: <input type="number" id="insertId" placeholder="Enter ID" required> <br><br>-->
-<!--        Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20"> <br><br>-->
-
-<!--        <button type="submit"> insert </button> <br>-->
-<!--    </form>-->
-<!--    <div id="insertResultMsg"></div>-->
-
-    <h2> Insert User Allergies </h2>
-    <form id="insertUserAllergy">
-        ID: <input type="number" id="insertId" placeholder="Enter UserID" required> <br><br>
-        Allergy: <input type="text" id="insertAllergy" placeholder="Enter Allergy" maxlength="20" required> <br><br>
-        Severity:
-        <select id="insertSeverity">
-            <option value="" disabled selected>Select Severity</option>
-            <option value="Mild">Mild</option>
-            <option value="Moderate">Moderate</option>
-            <option value="Severe">Severe</option>
-        </select> <br><br>
+    <h2> Insert Values into DemoTable </h2>
+    <form id="insertDemotable">
+        ID: <input type="number" id="insertId" placeholder="Enter ID" required> <br><br>
+        Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20"> <br><br>
 
         <button type="submit"> insert </button> <br>
     </form>
     <div id="insertResultMsg"></div>
 
-    <h2> Insert Ingredient into Recope </h2>
+    <h2> Insert Ingredient into Recipe </h2>
     <form id="insertIngredient">
         recipeID: <input type="number" id="insertRecipeID" placeholder="Enter Recipe ID" required> <br><br>
         ingredientName: <input type="text" id="insertIngredientName" placeholder="Enter Ingredient Name" maxlength="40" required> <br><br>
@@ -82,6 +66,24 @@
         <button type="submit"> insert </button> <br>
     </form>
     <div id="insertIngredientResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2> Select the Quality of Recipes </h2>
+    <form id="selectRatingForm">
+        <label for="selectOverallRating">Overall Rating:</label>
+        <select id="selectOverallRating" required>
+            <option value="" disabled selected>Select a rating</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <br><br>
+        <button type="submit">Insert</button>
+    </form>
+    <div id="selectRatingMsg"></div>
 
     <br><hr><br> <!-- ========================================================================= -->
 

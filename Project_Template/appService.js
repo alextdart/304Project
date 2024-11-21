@@ -135,6 +135,22 @@ async function insertIngredient(id, name, quantity) {
     });
 }
 
+async function selectOverallRating(overallRating) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT ra.overallRating, re.name
+             FROM rating ra, recipe re
+             WHERE ra.recipeID = re.ID AND overallRating > :overallRating`,
+            [overallRating],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 async function updateNameDemotable(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -164,6 +180,7 @@ module.exports = {
     initiateDemotable, 
     insertDemotable,
     insertIngredient,
+    selectOverallRating,
     updateNameDemotable, 
     countDemotable
 };

@@ -49,6 +49,17 @@ router.post("/insert-recipehasingredient", async (req, res) => {
     }
 });
 
+router.post("/select-overallRating", async (req, res) => {
+    const { overallRating } = req.body;
+    const insertResult = await appService.selectOverallRating(overallRating);
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+
 router.post("/update-name-demotable", async (req, res) => {
     const { oldName, newName } = req.body;
     const updateResult = await appService.updateNameDemotable(oldName, newName);

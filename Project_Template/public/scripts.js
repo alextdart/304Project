@@ -138,6 +138,32 @@ async function insertRecipeHasIngredient(event) {
     }
 }
 
+async function selectRating(event) {
+    event.preventDefault();
+
+    const overallRatingValue = document.getElementById('selectOverallRating').value;
+
+    const response = await fetch('/select-overallRating', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            overallRating: overallRatingValue
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('insertIngredientResultMsg');
+
+    if (responseData.success) {
+        messageElement.textContent = "Ingredient inserted successfully!";
+        fetchTableData();
+    } else {
+        messageElement.textContent = "Error inserting data!";
+    }
+}
+
 // Updates names in the demotable.
 async function updateNameDemotable(event) {
     event.preventDefault();
