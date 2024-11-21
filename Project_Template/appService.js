@@ -162,6 +162,24 @@ async function getIngredientsInGroceryListAssosciatedWith(mealPlanID) {
     });
 }
 
+async function getTotalNutrionalInfoInRecipe(recipeID) {
+    return await oracledb(async (connection) => {
+        const result = await connection.execute(`
+            SELECT r.NAME, SUM(rhi.QUANTITY * ini.CALORIES) AS TotalCalories, SUM(rhi.QUANTITY * ini.FAT) AS TotalFat, 
+                   SUM(rhi.QUANTITY * ini.FAT) AS TotalProtein
+            FROM RECIPE r 
+                JOIN RECIPEHASINGREDIENT rhi ON r.ID = rhi.RECIPEID 
+                JOIN INGREDIENTNUTRITIONALINFO ini ON rhi.INGREDIENTNAME = ini.NAME
+            WHERE r.ID = ${recipeID}
+            GROUP BY r.NAME;
+        `);
+        return result;
+    }).catch(() => {
+        console.log(`Failed to get total nutrional info in recipe with ID: ${recipeID}`);
+        return 0;
+    })
+}
+
 async function insertDemotable(id, name) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
