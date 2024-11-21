@@ -260,5 +260,12 @@ INSERT INTO GroceryListContainsIngredient (groceryListID, ingredientName) VALUES
 INSERT INTO GroceryListContainsIngredient (groceryListID, ingredientName) VALUES (4, 'Rice');
 INSERT INTO GroceryListContainsIngredient (groceryListID, ingredientName) VALUES (5, 'Ground Beef');
 
+INSERT INTO Rating (ratingID, overallRating, difficultyRating, userID, recipeID) VALUES  (1, 4, 3, 1, 2);
+INSERT INTO Rating (ratingID, overallRating, difficultyRating, userID, recipeID) VALUES  (2, 5, 2, 3, 1);
+INSERT INTO Rating (ratingID, overallRating, difficultyRating, userID, recipeID) VALUES  (3, 5, 3, 2, 1);
+INSERT INTO Rating (ratingID, overallRating, difficultyRating, userID, recipeID) VALUES  (4, 3, 4, 5, 4);
+INSERT INTO Rating (ratingID, overallRating, difficultyRating, userID, recipeID) VALUES  (5, 2, 5, 2, 3);
+
+
 
 
