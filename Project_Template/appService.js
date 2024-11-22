@@ -85,6 +85,15 @@ async function fetchDemotableFromDb() {
     });
 }
 
+async function fetchClientTableFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM CLIENT');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 async function initiateDemotable() {
     return await withOracleDB(async (connection) => {
         try {
@@ -228,6 +237,43 @@ async function getTotalNutrionalInfoInRecipe(recipeID) {
     })
 }
 
+// 2.2.2 Update
+async function updateUserInfo(userID, newFullName, newCountry, newCuisine, newDiet, newGroceryStore) {
+    return await withOracleDB(async (connection) => {
+        // get previous values from userID
+        const prev = await connection.execute(
+            `SELECT FULLNAME, COUNTRY, CUISINE, DIET, GROCERYSTORE FROM CLIENT WHERE USERID=:userID`,
+            [userID],
+            { autoCommit: true }
+        );
+
+        if (prev.rows.length === 0) {
+            throw new Error("user not found");
+        }
+
+        const currentData = prev.rows[0];
+
+        // use existing data if not otherwise provided
+        newFullName = newFullName || currentData[0];
+        newCountry = newCountry || currentData[1];
+        newCuisine = newCuisine || currentData[2];
+        newDiet = newDiet || currentData[3];
+        newGroceryStore = newGroceryStore || currentData[4];
+
+        const result = await connection.execute(
+            `UPDATE CLIENT SET FULLNAME=:newFullName, COUNTRY=:newCountry, CUISINE=:newCuisine, DIET=:newDiet, GROCERYSTORE=:newGroceryStore where USERID=:userID`,
+            [userID, newFullName, newCountry, newCuisine, newDiet, newGroceryStore],
+            { autoCommit: true }
+        );
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+// 2.2.5 Projection
+
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -239,5 +285,6 @@ module.exports = {
     getRecipesWithCaloriesOver,
     getMealPlansCreatedBy,
     getIngredientsInGroceryListAssosciatedWith,
-    getTotalNutrionalInfoInRecipe
+    getTotalNutrionalInfoInRecipe,
+    updateUserInfo
 };
