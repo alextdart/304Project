@@ -138,7 +138,7 @@ async function insertIngredient(id, name, quantity) {
 async function selectOverallRating(overallRating) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT AVG(ra.overallRating), re.name, re.author
+            `SELECT ra.overallRating, ra.userID, re.name, re.author
              FROM rating ra, recipe re
              WHERE ra.recipeID = re.ID AND overallRating >= :overallRating`,
             [overallRating]
@@ -147,8 +147,9 @@ async function selectOverallRating(overallRating) {
         // Map rows to objects for better readability
         return result.rows.map(row => ({
             ID: row[0],
-            NAME: row[1],
-            AUTHOR: row[2],
+            USERID: row[1],
+            NAME: row[2],
+            AUTHOR: row[3],
         }));
     }).catch((error) => {
         console.error(error);

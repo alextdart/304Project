@@ -41,26 +41,11 @@ router.post("/insert-demotable", async (req, res) => {
 
 router.post("/insert-recipehasingredient", async (req, res) => {
     const { recipeID, ingredientName, quantity } = req.body;
-    try {
-        const insertResult = await appService.insertIngredient(recipeID, ingredientName, quantity);
-        if (insertResult) {
-            res.json({ success: true, message: "Ingredient inserted successfully!" });
-        } else {
-            res.status(500).json({ success: false, message: "Unexpected error occurred." });
-        }
-    } catch (error) {
-        console.error("Error inserting RecipeHasIngredient:", error);
-
-        if (error.errorNum === 1) {
-            // UNIQUE constraint violation (ingredient already exists for this recipe)
-            res.status(400).json({ success: false, message: "This recipe already has the ingredient." });
-        } else if (error.errorNum === 2291) {
-            // FOREIGN KEY violation (recipeID or ingredientName does not exist)
-            res.status(400).json({ success: false, message: "RecipeID or IngredientName does not exist." });
-        } else {
-            // General database error
-            res.status(500).json({ success: false, message: "Internal Server Error." });
-        }
+    const insertResult = await appService.insertIngredient(recipeID, ingredientName, quantity);
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
     }
 });
 

@@ -134,7 +134,7 @@ async function insertRecipeHasIngredient(event) {
         messageElement.textContent = "Ingredient inserted successfully!";
         fetchTableData();
     } else {
-        messageElement.textContent = responseData.message;
+        messageElement.textContent = "RecipeID and Ingredient Name must exist prior to insert, and cannot be paired already.";
     }
 }
 
@@ -241,6 +241,7 @@ async function selectRating(event) {
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${recipe.ID}</td>
+                <td>${recipe.USERID}</td>
                 <td>${recipe.NAME}</td>
                 <td>${recipe.AUTHOR}</td>
             `;
