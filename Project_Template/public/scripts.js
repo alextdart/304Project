@@ -290,7 +290,7 @@ window.onload = function() {
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     document.getElementById("insertIngredient").addEventListener("submit", insertRecipeHasIngredient);
-    document.getElementById("selectOverallRating").addEventListener("submit", selectRating);
+    document.getElementById("selectOverallRatingButton").addEventListener("submit", selectRating);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("aggregateCalories").addEventListener("click", aggregateCalories);
