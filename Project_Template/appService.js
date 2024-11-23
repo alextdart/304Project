@@ -130,8 +130,8 @@ async function insertIngredient(id, name, quantity) {
         );
 
         return result.rowsAffected && result.rowsAffected > 0;
-    }).catch((error) => {
-        return error;
+    }).catch(() => {
+        return false;
     });
 }
 
