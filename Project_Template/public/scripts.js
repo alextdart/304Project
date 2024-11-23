@@ -134,7 +134,7 @@ async function insertRecipeHasIngredient(event) {
         messageElement.textContent = "Ingredient inserted successfully!";
         fetchTableData();
     } else {
-        messageElement.textContent = "Recipe ID or Ingredient doesn't exist! Please select existing values.";
+        messageElement.textContent = responseData.message;
     }
 }
 
