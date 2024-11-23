@@ -71,7 +71,7 @@
 
     <h2>SELECTION: Select the Quality of Recipes </h2>
     <form id="selectRatingForm">
-        <label for="selectOverallRating">I want to see all recopes with a rating above:</label>
+        <label for="selectOverallRating">I want to see all recipes with an overall rating of at least:</label>
         <select id="selectOverallRating" required>
             <option value="" disabled selected>Select a rating</option>
             <option value="1">1</option>
@@ -81,11 +81,9 @@
             <option value="5">5</option>
         </select>
         <br><br>
-        <button type="submit">Return Recipes</button>
+        <button type="submit">Show Me</button>
     </form>
-    <div id="selectRatingMsg"></div>
-
-    <h2>Recipes</h2>
+    <h3>Recipes</h3>
     <table id="recipesWithRating" border="1">
         <thead>
         <tr>
@@ -99,6 +97,7 @@
         </tbody>
     </table>
 
+    <div id="selectRatingMsg"></div>
     <br><hr><br> <!-- ========================================================================= -->
 
     <h2>Update Name in DemoTable</h2>
@@ -120,11 +119,8 @@
     <div id="countResultMsg"></div> <br>
 
     <h2>AGGREGATION: Total Calories per Recipe</h2>
-    <button id="aggregateCalories"> count </button> <br><br>
-    <!-- A placeholder to display the count result. -->
-    <div id="aggregateCaloriesMsg"></div> <br>
-
-    <h2>Total Calories Per Recipe</h2>
+    <button id="aggregateCalories"> Show Me </button> <br><br>
+    <h3>Total Calories Per Recipe</h3>
     <table id="totalCaloriesPerRecipe" border="1">
         <thead>
         <tr>
@@ -136,6 +132,22 @@
         <tbody>
         </tbody>
     </table>
+    <div id="aggregateCaloriesMsg"></div> <br>
+
+    <h2>DIVISION: Find Users with Every Allergy</h2>
+    <button id="findAllergicPeople"> Show Me </button> <br><br>
+    <h3>Total Calories Per Recipe</h3>
+    <table id="allergicPeople" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Full Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div id="findAllergicPeopleMsg"></div> <br>
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->

@@ -91,7 +91,21 @@ router.get('/aggregate-Calories', async (req, res) => {
     if (aggregatedData) {
         res.json({
             success: true,
-            data: aggregatedData // Return aggregated data
+            data: aggregatedData
+        });
+    } else {
+        res.status(500).json({
+            success: false
+        });
+    }
+});
+
+router.get('/division-AllergicPeople', async (req, res) => {
+    const allergicPeople = await appService.findAllergicPeople();
+    if (allergicPeople) {
+        res.json({
+            success: true,
+            data: allergicPeople
         });
     } else {
         res.status(500).json({

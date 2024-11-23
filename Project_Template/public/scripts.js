@@ -138,6 +138,7 @@ async function insertRecipeHasIngredient(event) {
     }
 }
 
+// Finds all recipes with a rating equal or greater than the specified amount
 async function selectRating(event) {
     event.preventDefault();
 
@@ -154,7 +155,7 @@ async function selectRating(event) {
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('selectRatingResultMsg');
+    const messageElement = document.getElementById('selectRatingMsg');
     const tableBody = document.querySelector("#recipesWithRating tbody");
 
     if (responseData.success) {
@@ -237,8 +238,8 @@ async function aggregateCalories() {
         tableBody.innerHTML = ""; // Clear existing rows
 
         responseData.data.forEach((row) => {
-            const totalCalories = row[0]; // Assuming `totalCalories` is the second column
-            const recipeName = row[1]; // Assuming `recipeName` is the first column
+            const totalCalories = row[0];
+            const recipeName = row[1];
 
             const newRow = document.createElement("tr");
             newRow.innerHTML = `
@@ -252,7 +253,33 @@ async function aggregateCalories() {
     }
 }
 
+// Finds the total calories for each recipe, group by recipe
+async function findAllergicPeople() {
+    const response = await fetch("/division-AllergicPeople", {
+        method: 'GET'
+    });
 
+    const responseData = await response.json();
+    const messageElement = document.getElementById('findAllergicPeopleMsg');
+    const tableBody = document.querySelector("#allergicPeople tbody");
+
+    if (responseData.success) {
+        messageElement.textContent = "Users with all allergies found!";
+        tableBody.innerHTML = ""; // Clear existing rows
+
+        responseData.data.forEach((row) => {
+            const users = row[0]; //
+
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td>${users}</td>
+            `;
+            tableBody.appendChild(newRow);
+        });
+    } else {
+        messageElement.textContent = "Error calculating users with every allergy!";
+    }
+}
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -267,6 +294,7 @@ window.onload = function() {
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("aggregateCalories").addEventListener("click", aggregateCalories);
+    document.getElementById("findAllergicPeople").addEventListener("click", findAllergicPeople);
 };
 
 // General function to refresh the displayed table data. 

@@ -140,13 +140,18 @@ async function selectOverallRating(overallRating) {
         const result = await connection.execute(
             `SELECT ra.overallRating, re.name
              FROM rating ra, recipe re
-             WHERE ra.recipeID = re.ID AND overallRating > :overallRating`,
-            [overallRating],
-            { autoCommit: true }
+             WHERE ra.recipeID = re.ID AND overallRating >= :overallRating`,
+            [overallRating]
         );
 
-        return result.rows;
-    }).catch(() => {
+        // Map rows to objects for better readability
+        return result.rows.map(row => ({
+            ID: row[0],
+            NAME: row[1],
+            AUTHOR: row[2],
+        }));
+    }).catch((error) => {
+        console.error(error);
         return false;
     });
 }
@@ -191,6 +196,27 @@ async function totalCaloriesPerRecipe() {
     });
 }
 
+async function findAllergicPeople() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT c.fullName
+             FROM client c
+             WHERE NOT EXISTS (
+                 (SELECT a.type
+                  FROM allergy a)
+                 MINUS
+                 (SELECT uha.allergyType
+                 FROM userHasAllergy uha
+                 WHERE uha.userID = c.userID)
+                       );`
+        );
+        return result.rows; // Return rows directly
+    }).catch((error) => {
+        console.error("Database Error:", error); // Debugging
+        return null;
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -200,5 +226,6 @@ module.exports = {
     selectOverallRating,
     updateNameDemotable, 
     countDemotable,
-    totalCaloriesPerRecipe
+    totalCaloriesPerRecipe,
+    findAllergicPeople
 };
