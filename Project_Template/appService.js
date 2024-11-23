@@ -210,9 +210,11 @@ async function findAllergicPeople() {
                  WHERE uha.userID = c.userID)
                        )`
         );
-        return result.rows; // Return rows directly
+        return result.rows.map((row) => ({
+            fullName: row[0],
+        }));
     }).catch((error) => {
-        console.error("Database Error:", error); // Debugging
+        console.error("Database Error:", error);
         return null;
     });
 }

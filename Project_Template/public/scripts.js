@@ -265,12 +265,12 @@ async function findAllergicPeople() {
 
     if (responseData.success) {
         messageElement.textContent = "Users with all allergies found!";
-        tableBody.innerHTML = ""; // Clear existing rows
+        tableBody.innerHTML = "";
 
-        responseData.users.forEach((row) => {
+        responseData.users.forEach((user) => {
             const newRow = document.createElement("tr");
             newRow.innerHTML = `
-                <td>${user['Full Name']}</td>
+                <td>${user.fullName}</td>
             `;
             tableBody.appendChild(newRow);
         });
@@ -288,7 +288,7 @@ window.onload = function() {
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     document.getElementById("insertIngredient").addEventListener("submit", insertRecipeHasIngredient);
-    document.getElementById("selectOverallRatingButton").addEventListener("submit", selectRating);
+    document.getElementById("selectRatingForm").addEventListener("submit", selectRating);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("aggregateCalories").addEventListener("click", aggregateCalories);
