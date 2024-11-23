@@ -134,8 +134,83 @@ async function insertRecipeHasIngredient(event) {
         messageElement.textContent = "Ingredient inserted successfully!";
         fetchTableData();
     } else {
-        messageElement.textContent = "Error inserting data!";
+        messageElement.textContent = "Recipe ID or Ingredient doesn't exist! Please select existing values.";
     }
+}
+
+// Fetches data from the RecipeHasIngredient table and displays it.
+async function fetchAndDisplayRecipeHasIngredient() {
+    const tableElement = document.getElementById('recipeHasIngredientTable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/recipeHasIngredient', {
+        method: 'GET',
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+
+    if (tableBody) {
+        tableBody.innerHTML = ''; // Clear old data
+    }
+
+    tableContent.forEach((row) => {
+        const newRow = tableBody.insertRow();
+        row.forEach((field, index) => {
+            const cell = newRow.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Fetches data from the Recipe table and displays it.
+async function fetchAndDisplayRecipe() {
+    const tableElement = document.getElementById('recipeTable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/recipe', {
+        method: 'GET',
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+
+    if (tableBody) {
+        tableBody.innerHTML = ''; // Clear old data
+    }
+
+    tableContent.forEach((row) => {
+        const newRow = tableBody.insertRow();
+        row.forEach((field, index) => {
+            const cell = newRow.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Fetches data from the Ingredient table and displays it.
+async function fetchAndDisplayIngredient() {
+    const tableElement = document.getElementById('ingredientTable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/ingredient', {
+        method: 'GET',
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+
+    if (tableBody) {
+        tableBody.innerHTML = ''; // Clear old data
+    }
+
+    tableContent.forEach((row) => {
+        const newRow = tableBody.insertRow();
+        row.forEach((field, index) => {
+            const cell = newRow.insertCell(index);
+            cell.textContent = field;
+        });
+    });
 }
 
 // Finds all recipes with a rating equal or greater than the specified amount
@@ -299,4 +374,7 @@ window.onload = function() {
 // You can invoke this after any table-modifying operation to keep consistency.
 function fetchTableData() {
     fetchAndDisplayUsers();
+    fetchAndDisplayRecipeHasIngredient();
+    fetchAndDisplayIngredient();
+    fetchAndDisplayRecipe();
 }

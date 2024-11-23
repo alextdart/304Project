@@ -48,6 +48,36 @@ router.post("/insert-recipehasingredient", async (req, res) => {
         res.status(500).json({ success: false });
     }
 });
+router.get('/recipeHasIngredient', async (req, res) => {
+    try {
+        const data = await appService.getRecipeHasIngredientData();
+        res.json({ success: true, data });
+    } catch (error) {
+        console.error('Error fetching RecipeHasIngredient data:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+});
+
+router.get('/recipe', async (req, res) => {
+    try {
+        const data = await appService.getRecipeData();
+        res.json({ success: true, data });
+    } catch (error) {
+        console.error('Error fetching Recipe data:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+});
+
+router.get('/ingredient', async (req, res) => {
+    try {
+        const data = await appService.getIngredientData();
+        res.json({ success: true, data });
+    } catch (error) {
+        console.error('Error fetching Ingredient data:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+});
+
 
 router.post("/select-overallRating", async (req, res) => {
     const { overallRating } = req.body;

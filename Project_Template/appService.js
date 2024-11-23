@@ -156,6 +156,33 @@ async function selectOverallRating(overallRating) {
     });
 }
 
+async function getRecipeHasIngredientData() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT recipeID, ingredientName, quantity FROM RecipeHasIngredient`
+        );
+        return result.rows;
+    });
+}
+
+async function getRecipeData() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT ID, name, author FROM Recipe`
+        );
+        return result.rows;
+    });
+}
+
+async function getIngredientData() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT name, foodGroup FROM Ingredient`
+        );
+        return result.rows;
+    });
+}
+
 async function updateNameDemotable(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -226,6 +253,9 @@ module.exports = {
     insertDemotable,
     insertIngredient,
     selectOverallRating,
+    getIngredientData,
+    getRecipeData,
+    getRecipeHasIngredientData,
     updateNameDemotable, 
     countDemotable,
     totalCaloriesPerRecipe,
