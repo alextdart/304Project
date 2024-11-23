@@ -105,7 +105,7 @@ router.get('/division-AllergicPeople', async (req, res) => {
     if (allergicPeople) {
         res.json({
             success: true,
-            data: allergicPeople
+            users: allergicPeople
         });
     } else {
         res.status(500).json({

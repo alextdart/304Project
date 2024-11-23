@@ -199,7 +199,7 @@ async function totalCaloriesPerRecipe() {
 async function findAllergicPeople() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT c.fullName
+            `SELECT c.fullName as 'Full Name'
              FROM client c
              WHERE NOT EXISTS (
                  (SELECT a.type

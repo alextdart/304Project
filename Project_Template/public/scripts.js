@@ -267,12 +267,10 @@ async function findAllergicPeople() {
         messageElement.textContent = "Users with all allergies found!";
         tableBody.innerHTML = ""; // Clear existing rows
 
-        responseData.data.forEach((row) => {
-            const users = row[0]; //
-
+        responseData.users.forEach((row) => {
             const newRow = document.createElement("tr");
             newRow.innerHTML = `
-                <td>${users}</td>
+                <td>${user['Full Name']}</td>
             `;
             tableBody.appendChild(newRow);
         });
