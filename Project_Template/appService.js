@@ -208,7 +208,7 @@ async function findAllergicPeople() {
                  (SELECT uha.allergyType
                  FROM userHasAllergy uha
                  WHERE uha.userID = c.userID)
-                       );`
+                       )`
         );
         return result.rows; // Return rows directly
     }).catch((error) => {
