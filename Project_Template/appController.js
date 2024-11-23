@@ -51,9 +51,10 @@ router.post("/insert-recipehasingredient", async (req, res) => {
 
 router.post("/select-overallRating", async (req, res) => {
     const { overallRating } = req.body;
-    const insertResult = await appService.selectOverallRating(overallRating);
-    if (insertResult) {
-        res.json({ success: true });
+    const recipes = await appService.selectOverallRating(overallRating);
+
+    if (recipes) {
+        res.json({ success: true, data: recipes });
     } else {
         res.status(500).json({ success: false });
     }
@@ -80,6 +81,21 @@ router.get('/count-demotable', async (req, res) => {
     } else {
         res.status(500).json({ 
             success: false, 
+            count: tableCount
+        });
+    }
+});
+
+router.get('/aggregate-Calories', async (req, res) => {
+    const tableCount = await appService.totalCaloriesPerRecipe();
+    if (tableCount >= 0) {
+        res.json({
+            success: true,
+            count: tableCount
+        });
+    } else {
+        res.status(500).json({
+            success: false,
             count: tableCount
         });
     }

@@ -145,7 +145,7 @@ async function selectOverallRating(overallRating) {
             { autoCommit: true }
         );
 
-        return result.rowsAffected && result.rowsAffected > 0;
+        return result.rows;
     }).catch(() => {
         return false;
     });
@@ -174,6 +174,18 @@ async function countDemotable() {
     });
 }
 
+async function totalCaloriesPerRecipe() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT r.name AS recipeName, SUM(ini.calories) AS totalCalories\n' +
+            'FROM recipe r, recipeHasIngredient ri, ingredient i, ingredientNutritionalInfo ini\n' +
+            'WHERE ri.ingredientName = i.name AND i.name = ini.name AND r.ID = ri.recipeID\n' +
+            'GROUP BY r.name;E');
+        return result.rows;
+    }).catch(() => {
+        return -1;
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -182,5 +194,6 @@ module.exports = {
     insertIngredient,
     selectOverallRating,
     updateNameDemotable, 
-    countDemotable
+    countDemotable,
+    totalCaloriesPerRecipe
 };

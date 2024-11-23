@@ -154,13 +154,24 @@ async function selectRating(event) {
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('insertIngredientResultMsg');
+    const messageElement = document.getElementById('selectRatingResultMsg');
+    const tableBody = document.querySelector("#recipesWithRating tbody");
 
     if (responseData.success) {
-        messageElement.textContent = "Ingredient inserted successfully!";
-        fetchTableData();
+        messageElement.textContent = "Recipes found!";
+        tableBody.innerHTML = ""; // Clear existing rows
+
+        responseData.data.forEach((recipe) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${recipe.ID}</td>
+                <td>${recipe.NAME}</td>
+                <td>${recipe.AUTHOR}</td>
+            `;
+            tableBody.appendChild(row);
+        });
     } else {
-        messageElement.textContent = "Error inserting data!";
+        messageElement.textContent = "Error finding recipes!";
     }
 }
 
@@ -211,6 +222,33 @@ async function countDemotable() {
     }
 }
 
+// Finds the total calories for each recipe, group by recipe
+async function aggregateCalories() {
+    const response = await fetch("/aggregate-Calories", {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('aggregateCaloriesMsg');
+    const tableBody = document.querySelector("#totalCaloriesPerRecipe tbody");
+
+    if (responseData.success) {
+        messageElement.textContent = "Recipes found!";
+        tableBody.innerHTML = ""; // Clear existing rows
+
+        responseData.data.forEach((recipe) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${totalCalories}</td>
+                <td>${recipeName}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    } else {
+        messageElement.textContent = "Error finding recipes!";
+    }
+}
+
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -221,8 +259,10 @@ window.onload = function() {
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     document.getElementById("insertIngredient").addEventListener("submit", insertRecipeHasIngredient);
+    document.getElementById("selectOverallRating").addEventListener("submit", selectRating);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
+    document.getElementById("aggregateCalories").addEventListener("click", aggregateCalories);
 };
 
 // General function to refresh the displayed table data. 
