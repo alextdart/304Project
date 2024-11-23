@@ -138,7 +138,7 @@ async function insertIngredient(id, name, quantity) {
 async function selectOverallRating(overallRating) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT ra.overallRating, re.name, re.author
+            `SELECT AVG(ra.overallRating), re.name, re.author
              FROM rating ra, recipe re
              WHERE ra.recipeID = re.ID AND overallRating >= :overallRating`,
             [overallRating]
