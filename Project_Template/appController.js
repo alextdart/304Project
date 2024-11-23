@@ -87,16 +87,15 @@ router.get('/count-demotable', async (req, res) => {
 });
 
 router.get('/aggregate-Calories', async (req, res) => {
-    const tableCount = await appService.totalCaloriesPerRecipe();
-    if (tableCount >= 0) {
+    const aggregatedData = await appService.totalCaloriesPerRecipe();
+    if (aggregatedData) {
         res.json({
             success: true,
-            count: tableCount
+            data: aggregatedData // Return aggregated data
         });
     } else {
         res.status(500).json({
-            success: false,
-            count: tableCount
+            success: false
         });
     }
 });

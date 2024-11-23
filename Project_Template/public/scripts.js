@@ -233,21 +233,25 @@ async function aggregateCalories() {
     const tableBody = document.querySelector("#totalCaloriesPerRecipe tbody");
 
     if (responseData.success) {
-        messageElement.textContent = "Recipes found!";
+        messageElement.textContent = "Calories per recipe calculated!";
         tableBody.innerHTML = ""; // Clear existing rows
 
-        responseData.data.forEach((recipe) => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
+        responseData.data.forEach((row) => {
+            const totalCalories = row[0]; // Assuming `totalCalories` is the second column
+            const recipeName = row[1]; // Assuming `recipeName` is the first column
+
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
                 <td>${totalCalories}</td>
                 <td>${recipeName}</td>
             `;
-            tableBody.appendChild(row);
+            tableBody.appendChild(newRow);
         });
     } else {
-        messageElement.textContent = "Error finding recipes!";
+        messageElement.textContent = "Error calculating total calories!";
     }
 }
+
 
 
 // ---------------------------------------------------------------

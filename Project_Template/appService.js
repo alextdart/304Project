@@ -176,13 +176,18 @@ async function countDemotable() {
 
 async function totalCaloriesPerRecipe() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT r.name AS recipeName, SUM(ini.calories) AS totalCalories\n' +
-            'FROM recipe r, recipeHasIngredient ri, ingredient i, ingredientNutritionalInfo ini\n' +
-            'WHERE ri.ingredientName = i.name AND i.name = ini.name AND r.ID = ri.recipeID\n' +
-            'GROUP BY r.name;E');
-        return result.rows;
-    }).catch(() => {
-        return -1;
+        const result = await connection.execute(
+            `SELECT r.name AS recipeName, SUM(ini.calories) AS totalCalories
+             FROM recipe r
+             JOIN recipeHasIngredient ri ON r.ID = ri.recipeID
+             JOIN ingredient i ON ri.ingredientName = i.name
+             JOIN ingredientNutritionalInfo ini ON i.name = ini.name
+             GROUP BY r.name`
+        );
+        return result.rows; // Return rows directly
+    }).catch((error) => {
+        console.error("Database Error:", error); // Debugging
+        return null;
     });
 }
 
