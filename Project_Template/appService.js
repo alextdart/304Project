@@ -272,7 +272,24 @@ async function updateUserInfo(userID, newFullName, newCountry, newCuisine, newDi
 }
 
 // 2.2.5 Projection
+async function getSelectedFieldsOfNutritionalInfo(calories, fat, protein) {
+    return await oracledb(async (connection) => {
 
+        const fields = ["NAME"];
+        if (calories) fields.push("CALORIES");
+        if (fat) fields.push("FAT");
+        if (protein) fields.push("PROTEIN");
+        const fieldsString = fields.join(", ");
+
+        return await connection.execute(`
+            SELECT ${fieldsString}
+            FROM INGREDIENTNUTRITIONALINFO
+        `);
+    }).catch(() => {
+        console.log(`Failed to retrieve selected nutritional info.`);
+        return []
+    });
+}
 
 module.exports = {
     testOracleConnection,
@@ -286,5 +303,6 @@ module.exports = {
     getMealPlansCreatedBy,
     getIngredientsInGroceryListAssosciatedWith,
     getTotalNutrionalInfoInRecipe,
-    updateUserInfo
+    updateUserInfo,
+    getSelectedFieldsOfNutritionalInfo
 };
