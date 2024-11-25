@@ -145,8 +145,8 @@ router.get('/division-AllergicPeople', async (req, res) => {
     }
 });
 
-router.delete('/meal-plan', async(req, res) => {
-    const {mealPlanID} = req.body;
+router.delete('/meal-plan/:meal-plan-ID', async(req, res) => {
+    const {mealPlanID} = req.params;
     const result = await appService.deleteMealPlan(mealPlanID);
     if (result) {
         res.json({ success: true });
@@ -155,18 +155,24 @@ router.delete('/meal-plan', async(req, res) => {
     }
 });
 
-router.get('/recipe/calories', async (req, res) => {
-    const { calories } = req.query; // Use query parameters
-    try {
-        const result = await appService.getRecipesWithCaloriesOver(calories);
-        res.json({ data: result });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+router.get('/recipe/:calories', async (req, res) => {
+    const {calories} = req.params;
+    const data = await appService.getRecipesWithCaloriesOver(calories);
+
+    if (data) {
+        res.json({
+            success: true,
+            data: data
+        });
+    } else {
+        res.status(500).json({
+            success: false
+        });
     }
 });
 
 router.get('/meal-plan/:userID', async (req, res) => {
-    const { userID } = req.params; // Use path parameters
+    const {userID} = req.params;
     const data = await appService.getMealPlansCreatedBy(userID);
 
     if (data) {
@@ -182,22 +188,35 @@ router.get('/meal-plan/:userID', async (req, res) => {
 });
 
 router.get('/grocery-list/:mealplanID', async (req, res) => {
-    const { mealplanID } = req.params;
-    try {
-        const result = await appService.getIngredientsInGroceryListAssosciatedWith(mealplanID);
-        res.json({ data: result });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    const {mealplanID} = req.params;
+
+    const data = await appService.getIngredientsInGroceryListAssosciatedWith(mealplanID);
+
+    if (data) {
+        res.json({
+            success: true,
+            data: data
+        });
+    } else {
+        res.status(500).json({
+            success: false
+        });
     }
 });
 
 router.get('/recipe/nutritional-info/:recipeID', async (req, res) => {
-    const { recipeID } = req.params;
-    try {
-        const result = await appService.getTotalNutrionalInfoInRecipe(recipeID);
-        res.json({ data: result });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    const {recipeID} = req.params;
+    const data = await appService.getTotalNutrionalInfoInRecipe(recipeID);
+
+    if (data) {
+        res.json({
+            success: true,
+            data: data
+        });
+    } else {
+        res.status(500).json({
+            success: false
+        });
     }
 })
 
