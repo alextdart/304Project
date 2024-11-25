@@ -438,7 +438,7 @@ module.exports = {
     getRecipesWithCaloriesOver,
     getMealPlansCreatedBy,
     getIngredientsInGroceryListAssosciatedWith,
-    getTotalNutrionalInfoInRecipe,
+    getTotalNutrionalInfoInRecipesFromMealPlan,
     updateUserInfo,
     getSelectedFieldsOfNutritionalInfo,
     getUsersWithMinMealPlans
