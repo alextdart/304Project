@@ -8,7 +8,7 @@ async function fetchAndDisplayMealPlans() {
     }
 
     const tableElement = document.getElementById('mealPlan');
-    const messageElement = document.getElementById('findAllergicPeopleMsg');
+    const messageElement = document.getElementById('fetchMealPlanMsg');
     const tableBody = tableElement.querySelector('tbody');
 
     const response = await fetch(`/meal-plan/${userID}`, {
@@ -19,7 +19,7 @@ async function fetchAndDisplayMealPlans() {
     const tableContent = responseData.data;
 
     if (responseData.success) {
-        messageElement.textContent = `Successfully fetched ${tableContent.length} rows`;
+        messageElement.textContent = `Successfully fetched ${tableContent.length} row(s)`;
 
         if (tableBody) {
             tableBody.innerHTML = '';
