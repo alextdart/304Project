@@ -20,81 +20,34 @@
     <thead>
     <tr>
         <!--Table head, need to be adjusted accordingly to align with your own.-->
-        <th>Meal Plan ID</th>
-        <th>Ends At:</th>
-        <th>Starts At:</th>
+        <th>ID</th>
+        <th>Starts</th>
+        <th>Ends</th>
         <th>Grocery List ID</th>
     </tr>
     </thead>
     <tbody>
     </tbody>
 </table>
-<div id="fetchMealPlanMsg"></div>
 
 <br>
 
 <h3>Enter User ID</h3>
-<label for="fetchMealPlanUserId">User ID:</label>
-<input type="text" id="fetchMealPlanUserId" name="userId" placeholder="Enter User ID">
+<label for="userId">User ID:</label>
+<input type="text" id="userId" name="userId" placeholder="Enter User ID">
 <button id="fetchMealPlanBtn">Fetch Meal Plan</button>
 
-<br><hr><br> <!-- ========================================================================= -->
-
-<h3>Delete Meal Plan</h3>
-<label for="deleteMealPlanID">Meal Plan ID:</label>
-<input type="text" id="deleteMealPlanID" name="mealPlanID" placeholder="Enter Meal Plan ID">
-<button id="deleteMealPlanBtn">Delete Meal Plan</button>
-<div id="deleteMealPlanMsg"></div>
-
-<br><hr><br> <!-- ========================================================================= -->
-
-<h2>Show Grocery Lists</h2>
-<table id="groceryList" border="1">
-    <thead>
-    <tr>
-        <!--Table head, need to be adjusted accordingly to align with your own.-->
-        <th>Grocery List Items</th>
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
-<div id="fetchGroceryListMsg"></div>
-
-<br>
-
-<h3>Enter Meal Plan ID</h3>
-<label for="fetchGroceryListMealPlanID">Meal Plan ID:</label>
-<input type="text" id="fetchGroceryListMealPlanID" name="userId" placeholder="Enter Meal Plan ID">
-<button id="fetchGroceryListBtn">Fetch Grocery List</button>
-
-<br><hr><br> <!-- ========================================================================= -->
-
-<h2>Show Recipe Nutritional Info in Meal Plan</h2>
-<table id="recipes" border="1">
-    <thead>
-    <tr>
-        <!--Table head, need to be adjusted accordingly to align with your own.-->
-        <th>Recipe Name</th>
-        <th>Total Calories</th>
-        <th>Total Fat</th>
-        <th>Total Protein</th>
-
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
-<div id="fetchRecipeMsg"></div>
-
-<br>
-
-<h3>Enter Meal Plan ID</h3>
-<label for="fetchRecipeMealPlanID">Meal Plan ID:</label>
-<input type="text" id="fetchRecipeMealPlanID" name="userId" placeholder="Enter Meal Plan ID">
-<button id="fetchRecipesBtn">Fetch Recipes</button>
-
 <script src="mealPlanScripts.js"></script>
+<script>
+    document.getElementById('fetchMealPlanBtn').addEventListener('click', () => {
+        const userId = document.getElementById('userId').value;
+        if (userId) {
+            fetchAndDisplayMealPlans(userId)
+        } else {
+            alert('Please enter a User ID');
+        }
+    });
+</script>
 
 </body>
 </html>

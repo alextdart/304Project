@@ -257,21 +257,13 @@ async function findAllergicPeople() {
 
 // deletes specified MealPlan
 async function deleteMealPlan(mealplanID) {
-
-    const IDAsNumber = Number(mealplanID);
-    if (isNaN(IDAsNumber)) {
-        console.error(`Invalid calories: ${mealplanID}`);
-        return null;
-    }
-
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(`
             DELETE 
             FROM MEALPLAN 
-            WHERE MEALPLANID = ${IDAsNumber}
+            WHERE MEALPLANID = ${mealplanID}
         `);
-        console.log(result);
-        return true;
+        return true
     }).catch(() => {
         console.log("Failed to delete Meal Plan with ID: ${mealplanID}");
         return false;
@@ -280,25 +272,18 @@ async function deleteMealPlan(mealplanID) {
 
 // gets all recipes with total calories over a given number. Returns list of Recipe Names.
 async function getRecipesWithCaloriesOver(calories) {
-    const caloriesAsNumber = Number(calories);
-    if (isNaN(caloriesAsNumber)) {
-        console.error(`Invalid calories: ${calories}`);
-        return null;
-    }
-
-    return await withOracleDB(async (connection) => {
-        result = await connection.execute(`
+    return await oracledb(async (connection) => {
+        return await connection.execute(`
             SELECT r.NAME, SUM(rhi.QUANTITY * ini.CALORIES) AS TotalCalories
             FROM RECIPE r 
                 JOIN RECIPEHASINGREDIENT rhi ON r.ID = rhi.RECIPEID 
                 JOIN INGREDIENTNUTRITIONALINFO ini ON rhi.INGREDIENTNAME = ini.NAME
             GROUP BY r.NAME
-            HAVING SUM(rhi.QUANTITY * ini.CALORIES) > ${caloriesAsNumber}
+            HAVING SUM(rhi.QUANTITY * ini.CALORIES) > ${calories};
         `);
-        return result.rows;
     }).catch(() => {
-        console.log(`Failed to get recipes with calories over ${caloriesAsNumber}`);
-        return null;
+        console.log(`Failed to get recipes with calories over ${calories}`);
+        return [];
     });
 }
 
@@ -307,55 +292,52 @@ async function getMealPlansCreatedBy(userID) {
     const userIdAsNumber = Number(userID);
     if (isNaN(userIdAsNumber)) {
         console.error(`Invalid userID: ${userID}`);
-        return null;
+        return [];
     }
 
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(`
+    return await oracledb(async (connection) => {
+        return await connection.execute(`
             SELECT mp.*
             FROM MEALPLAN mp, USERCREATESMEALPLAN ucmp
             WHERE mp.MEALPLANID = ucmp.MEALPLANID AND ucmp.USERID = ${userIdAsNumber}
             `);
-        return result.rows;
     }).catch(() => {
         console.error(`Failed to get Meal Plans Created By User with ID: ${userIdAsNumber}`);
-        return null;
+        return [];
     });
 }
 
 
 // gets ingredients in a grocery list assosciated with a mealPlan.
 async function getIngredientsInGroceryListAssosciatedWith(mealPlanID) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(`
+    return await oracledb(async (connection) => {
+        return await connection.execute(`
             SELECT gci.INGREDIENTNAME 
             FROM GROCERYLISTCONTAINSINGREDIENT gci, MEALPLAN mp
             WHERE mp.MEALPLANID = ${mealPlanID} AND mp.GROCERYLISTID = gci.GROCERYLISTID
         `);
-        return result.rows;
     }).catch(() => {
         console.log(`Failed to get Ingredients in the Grocery List Assosciated with MealPlanID: ${mealPlanID}`);
-        return null;
+        return []
     });
 }
 
 // gets all the sums of the nutritional info of all of the ingredients in a recipe
-async function getTotalNutrionalInfoInRecipesFromMealPlan(mealPlanID) {
-    return await withOracleDB(async (connection) => {
+async function getTotalNutrionalInfoInRecipe(recipeID) {
+    return await oracledb(async (connection) => {
         const result = await connection.execute(`
-            SELECT r.NAME, SUM(rhi.QUANTITY * ini.CALORIES) AS TotalCalories, SUM(rhi.QUANTITY * ini.FAT) AS TotalFat,
-                   SUM(rhi.QUANTITY * ini.PROTEIN) AS TotalProtein
-            FROM MEALPLANCONTAINSRECIPE mp
-                     JOIN RECIPE r on mp.RECIPEID = r.ID
-                     JOIN RECIPEHASINGREDIENT rhi ON r.ID = rhi.RECIPEID
-                     JOIN INGREDIENTNUTRITIONALINFO ini ON rhi.INGREDIENTNAME = ini.NAME
-            WHERE mp.MEALPLANID = ${mealPlanID}
-            GROUP BY r.NAME
+            SELECT r.NAME, SUM(rhi.QUANTITY * ini.CALORIES) AS TotalCalories, SUM(rhi.QUANTITY * ini.FAT) AS TotalFat, 
+                   SUM(rhi.QUANTITY * ini.FAT) AS TotalProtein
+            FROM RECIPE r 
+                JOIN RECIPEHASINGREDIENT rhi ON r.ID = rhi.RECIPEID 
+                JOIN INGREDIENTNUTRITIONALINFO ini ON rhi.INGREDIENTNAME = ini.NAME
+            WHERE r.ID = ${recipeID}
+            GROUP BY r.NAME;
         `);
-        return result.rows;
+        return result;
     }).catch(() => {
         console.log(`Failed to get total nutrional info in recipe with ID: ${recipeID}`);
-        return null;
+        return 0;
     })
 }
 
@@ -395,7 +377,7 @@ async function updateUserInfo(userID, newFullName, newCountry, newCuisine, newDi
 
 // 2.2.5 Projection
 async function getSelectedFieldsOfNutritionalInfo(calories, fat, protein) {
-    return await withOracleDB(async (connection) => {
+    return await oracledb(async (connection) => {
 
         const fields = ["NAME"];
         if (calories) fields.push("CALORIES");
@@ -415,7 +397,7 @@ async function getSelectedFieldsOfNutritionalInfo(calories, fat, protein) {
 
 // 2.2.8 Aggregation with HAVING
 async function getUsersWithMinMealPlans(minMealPlans) {
-    return await withOracleDB(async (connection) => {
+    return await oracledb(async (connection) => {
             const result = await connection.execute(`
                 SELECT userID, COUNT(mealplanid) as mealPlanCount
                 FROM USERCREATESMEALPLAN
@@ -448,7 +430,7 @@ module.exports = {
     getRecipesWithCaloriesOver,
     getMealPlansCreatedBy,
     getIngredientsInGroceryListAssosciatedWith,
-    getTotalNutrionalInfoInRecipesFromMealPlan,
+    getTotalNutrionalInfoInRecipe,
     updateUserInfo,
     getSelectedFieldsOfNutritionalInfo,
     getUsersWithMinMealPlans
