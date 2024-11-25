@@ -191,7 +191,7 @@ router.get('/meal-plan/from-user/:userID', async (req, res) => {
     }
 });
 
-router.get('/grocery-list/:mealplanID', async (req, res) => {
+router.get('/grocery-list/from-meal-plan/:mealplanID', async (req, res) => {
     const {mealplanID} = req.params;
 
     const data = await appService.getIngredientsInGroceryListAssosciatedWith(mealplanID);

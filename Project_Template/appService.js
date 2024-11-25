@@ -261,6 +261,7 @@ async function deleteMealPlan(mealplanID) {
             FROM MEALPLAN 
             WHERE MEALPLANID = ${IDAsNumber}
         `);
+        console.log(result);
         return true;
     }).catch(() => {
         console.log("Failed to delete Meal Plan with ID: ${mealplanID}");

@@ -38,6 +38,29 @@
 <input type="text" id="fetchMealPlanUserId" name="userId" placeholder="Enter User ID">
 <button id="fetchMealPlanBtn">Fetch Meal Plan</button>
 
+<h2>Show Grocery Lists</h2>
+<table id="groceryList" border="1">
+    <thead>
+    <tr>
+        <!--Table head, need to be adjusted accordingly to align with your own.-->
+        <th>Meal Plan ID</th>
+        <th>Ends At:</th>
+        <th>Starts At:</th>
+        <th>Grocery List ID</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<div id="fetchGroceryListMsg"></div>
+
+<br>
+
+<h3>Enter Meal Plan ID</h3>
+<label for="fetchGroceryListMealPlanID">Meal Plan ID:</label>
+<input type="text" id="fetchGroceryListMealPlanID" name="userId" placeholder="Enter Meal Plan ID">
+<button id="fetchGroceryListBtn">Fetch Grocery List</button>
+
 <script src="mealPlanScripts.js"></script>
 
 </body>
