@@ -331,18 +331,19 @@ async function getIngredientsInGroceryListAssosciatedWith(mealPlanID) {
 }
 
 // gets all the sums of the nutritional info of all of the ingredients in a recipe
-async function getTotalNutrionalInfoInRecipe(recipeID) {
+async function getTotalNutrionalInfoInRecipesFromMealPlan(mealPlanID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(`
-            SELECT r.NAME, SUM(rhi.QUANTITY * ini.CALORIES) AS TotalCalories, SUM(rhi.QUANTITY * ini.FAT) AS TotalFat, 
-                   SUM(rhi.QUANTITY * ini.FAT) AS TotalProtein
-            FROM RECIPE r 
-                JOIN RECIPEHASINGREDIENT rhi ON r.ID = rhi.RECIPEID 
-                JOIN INGREDIENTNUTRITIONALINFO ini ON rhi.INGREDIENTNAME = ini.NAME
-            WHERE r.ID = ${recipeID}
-            GROUP BY r.NAME;
+            SELECT r.NAME, SUM(rhi.QUANTITY * ini.CALORIES) AS TotalCalories, SUM(rhi.QUANTITY * ini.FAT) AS TotalFat,
+                   SUM(rhi.QUANTITY * ini.PROTEIN) AS TotalProtein
+            FROM MEALPLANCONTAINSRECIPE mp
+                     JOIN RECIPE r on mp.RECIPEID = r.ID
+                     JOIN RECIPEHASINGREDIENT rhi ON r.ID = rhi.RECIPEID
+                     JOIN INGREDIENTNUTRITIONALINFO ini ON rhi.INGREDIENTNAME = ini.NAME
+            WHERE mp.MEALPLANID = ${mealPlanID}
+            GROUP BY r.NAME
         `);
-        return result;
+        return result.rows;
     }).catch(() => {
         console.log(`Failed to get total nutrional info in recipe with ID: ${recipeID}`);
         return null;

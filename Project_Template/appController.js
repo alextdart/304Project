@@ -208,9 +208,9 @@ router.get('/grocery-list/from-meal-plan/:mealplanID', async (req, res) => {
     }
 });
 
-router.get('/recipe/nutritional-info/:recipeID', async (req, res) => {
-    const {recipeID} = req.params;
-    const data = await appService.getTotalNutrionalInfoInRecipe(recipeID);
+router.get('/recipe/nutritional-info/from-meal-plan/:mealPlanID', async (req, res) => {
+    const {mealPlanID} = req.params;
+    const data = await appService.getTotalNutrionalInfoInRecipesFromMealPlan(mealPlanID);
 
     if (data) {
         res.json({

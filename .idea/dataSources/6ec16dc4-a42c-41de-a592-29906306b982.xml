@@ -6225,7 +6225,7 @@
     </table>
     <table id="2053" parent="341" name="MEALPLANCONTAINSRECIPE">
       <CreatedTimestamp>2024-11-20.11:56:27</CreatedTimestamp>
-      <DetailsLevel>3</DetailsLevel>
+      <DetailsLevel>2</DetailsLevel>
       <ModifiedTimestamp>2024-11-20.11:56:27</ModifiedTimestamp>
       <ObjectId>562161</ObjectId>
       <TemporaryPreserve>1</TemporaryPreserve>

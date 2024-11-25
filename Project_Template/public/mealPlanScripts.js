@@ -77,7 +77,47 @@ async function fetchAndDisplayGroceryList() {
     }
 }
 
+async function fetchAndDisplayRecipes() {
+    const mealPlanID = document.getElementById(`fetchRecipeMealPlanID`).value;
+    const messageElement = document.getElementById('fetchRecipeMsg');
+
+    if (mealPlanID === "") {
+        console.log("No mealPlanID inputted");
+        messageElement.textContent = "No Meal Plan ID inputted."
+        return;
+    }
+
+    const tableElement = document.getElementById('recipes');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch(`/recipe/nutritional-info/from-meal-plan/${mealPlanID}`, {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+
+    if (responseData.success) {
+        messageElement.textContent = `Successfully fetched ${tableContent.length} row(s)`;
+
+        if (tableBody) {
+            tableBody.innerHTML = '';
+        }
+
+        tableContent.forEach((row) => {
+            const newRow = tableBody.insertRow();
+            row.forEach((field, index) => {
+                const cell = newRow.insertCell(index);
+                cell.textContent = field;
+            });
+        });
+    } else {
+        messageElement.textContent = `Error fetching recipes for meal plan with ID: ${mealPlanID}`;
+    }
+}
+
 window.onload = function() {
     document.getElementById("fetchMealPlanBtn").addEventListener("click", fetchAndDisplayMealPlans);
     document.getElementById("fetchGroceryListBtn").addEventListener("click", fetchAndDisplayGroceryList);
+    document.getElementById("fetchRecipesBtn").addEventListener("click", fetchAndDisplayRecipes);
 };
