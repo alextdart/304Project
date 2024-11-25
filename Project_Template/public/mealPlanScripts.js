@@ -39,7 +39,7 @@ async function fetchAndDisplayMealPlans() {
 }
 
 async function fetchAndDisplayGroceryList() {
-    const mealPlanID = document.getElementById(`fetchGroceryListMealPlanID`);
+    const mealPlanID = document.getElementById(`fetchGroceryListMealPlanID`).value;
     const messageElement = document.getElementById('fetchGroceryListMsg');
 
     if (mealPlanID === "") {

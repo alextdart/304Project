@@ -318,11 +318,12 @@ async function getMealPlansCreatedBy(userID) {
 // gets ingredients in a grocery list assosciated with a mealPlan.
 async function getIngredientsInGroceryListAssosciatedWith(mealPlanID) {
     return await withOracleDB(async (connection) => {
-        return await connection.execute(`
+        const result = await connection.execute(`
             SELECT gci.INGREDIENTNAME 
             FROM GROCERYLISTCONTAINSINGREDIENT gci, MEALPLAN mp
             WHERE mp.MEALPLANID = ${mealPlanID} AND mp.GROCERYLISTID = gci.GROCERYLISTID
         `);
+        return result.rows;
     }).catch(() => {
         console.log(`Failed to get Ingredients in the Grocery List Assosciated with MealPlanID: ${mealPlanID}`);
         return null;
