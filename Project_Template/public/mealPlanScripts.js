@@ -143,4 +143,5 @@ window.onload = function() {
     document.getElementById("fetchMealPlanBtn").addEventListener("click", fetchAndDisplayMealPlans);
     document.getElementById("fetchGroceryListBtn").addEventListener("click", fetchAndDisplayGroceryList);
     document.getElementById("fetchRecipesBtn").addEventListener("click", fetchAndDisplayRecipes);
+    document.getElementById("deleteMealPlanBtn").addEventListener("click", deleteMealPlan);
 };
