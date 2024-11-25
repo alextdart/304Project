@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="IU-243.21565.193">
+  <component name="dataSourceStorageLocal" created-in="IU-233.13135.103">
     <data-source name="@dbhost.students.cs.ubc.ca" uuid="6ec16dc4-a42c-41de-a592-29906306b982">
       <database-info product="Oracle" version="Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production&#10;Version 19.25.0.0.0" jdbc-version="4.3" driver-name="Oracle JDBC driver" driver-version="21.5.0.0.0" dbms="ORACLE" exact-version="19.0.0.0.0" exact-driver-version="21.5">
         <extra-name-characters>$#</extra-name-characters>
@@ -8,7 +8,7 @@
       </database-info>
       <case-sensitivity plain-identifiers="upper" quoted-identifiers="exact" />
       <secret-storage>master_key</secret-storage>
-      <user-name>ora_annaf656</user-name>
+      <user-name>ora_gveli</user-name>
       <schema-mapping>
         <introspection-scope>
           <node kind="schema">
@@ -17,6 +17,7 @@
           </node>
         </introspection-scope>
       </schema-mapping>
+      <load-sources>user_and_system_sources</load-sources>
     </data-source>
   </component>
 </project>
