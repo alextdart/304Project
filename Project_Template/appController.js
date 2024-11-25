@@ -79,6 +79,15 @@ router.get('/ingredient', async (req, res) => {
     }
 });
 
+router.get('/client', async (req, res) => {
+    try {
+        const data = await appService.getClientData();
+        res.json({ success: true, data });
+    } catch (error) {
+        console.error('Error fetching Client data:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+});
 
 router.post("/select-overallRating", async (req, res) => {
     const { overallRating } = req.body;
