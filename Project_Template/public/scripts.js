@@ -355,6 +355,104 @@ async function findAllergicPeople() {
     }
 }
 
+async function updateUserInfo(event) {
+    event.preventDefault();
+
+    const userID = document.getElementById('userID').value;
+    const fullName = document.getElementById('fullName').value;
+    const country = document.getElementById('country').value;
+    const cuisine = document.getElementById('cuisine').value;
+    const diet = document.getElementById('diet').value;
+    const groceryStore = document.getElementById('groceryStore').value;
+
+    const response = await fetch('/user/update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            userID,
+            fullName,
+            country,
+            cuisine,
+            diet,
+            groceryStore
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('updateUserInfoResultMsg');
+
+    if (responseData.success) {
+        messageElement.textContent = "User information updated";
+    } else {
+        messageElement.textContent = "Error updating user information";
+    }
+}
+
+async function fetchSelectedNutritionalInfo(event) {
+    event.preventDefault();
+
+    const calories = document.getElementById('calories').checked;
+    const fat = document.getElementById('fat').checked;
+    const protein = document.getElementById('protein').checked;
+
+    const queryParams = new URLSearchParams({
+        calories: calories ? 'true' : 'false',
+        fat: fat ? 'true' : 'false',
+        protein: protein ? 'true' : 'false'
+    });
+
+    const response = await fetch(`/nutritional-info?${queryParams.toString()}`);
+    const responseData = await response.json();
+    const messageElement = document.getElementById('nutritionalInfoResultMsg');
+    const tableBody = document.querySelector("#nutritionalInfoTable tbody");
+
+    if (responseData.success) {
+        messageElement.textContent = "Information retrieved";
+        tableBody.innerHTML = '';
+
+        responseData.data.forEach((item) => {
+            const newRow = tableBody.insertRow();
+            newRow.innerHTML = `
+                <td>${item.recipeID}</td>
+                <td>${item.calories}</td>
+                <td>${item.fat}</td>
+                <td>${item.protein}</td>
+            `;
+        });
+    } else {
+        messageElement.textContent = "Error fetching nutritional information";
+    }
+}
+
+async function fetchUsersWithMinMealPlans(event) {
+    event.preventDefault();
+
+    const minMealPlans = document.getElementById('minMealPlans').value;
+
+    const response = await fetch(`/users/meal-plans?minMealPlans=${minMealPlans}`);
+    const responseData = await response.json();
+    const messageElement = document.getElementById('usersWithMinMealPlansResultMsg');
+    const tableBody = document.querySelector("#usersWithMinMealPlansTable tbody");
+
+    if (responseData.success) {
+        messageElement.textContent = "Users found";
+        tableBody.innerHTML = '';
+
+        responseData.data.forEach((user) => {
+            const newRow = tableBody.insertRow();
+            newRow.innerHTML = `
+                <td>${user.userID}</td>
+                <td>${user.fullName}</td>
+                <td>${user.mealPlanCount}</td>
+            `;
+        });
+    } else {
+        messageElement.textContent = "Error fetching users";
+    }
+}
+
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
@@ -365,10 +463,13 @@ window.onload = function() {
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     document.getElementById("insertIngredient").addEventListener("submit", insertRecipeHasIngredient);
     document.getElementById("selectRatingForm").addEventListener("submit", selectRating);
-    document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
+    document.getElementById("updateNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("aggregateCalories").addEventListener("click", aggregateCalories);
     document.getElementById("findAllergicPeople").addEventListener("click", findAllergicPeople);
+    document.getElementById("updateUserInfoForm").addEventListener("submit", updateUserInfo);
+    document.getElementById("nutritionalInfoForm").addEventListener("submit", fetchSelectedNutritionalInfo);
+    document.getElementById("fetchUsersWithMinMealPlansForm").addEventListener("submit", fetchUsersWithMinMealPlans);
 };
 
 // General function to refresh the displayed table data. 

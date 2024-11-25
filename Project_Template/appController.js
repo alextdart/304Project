@@ -193,6 +193,42 @@ router.get('/recipe/nutritional-info/:recipeID', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-})
+});
+
+router.post('/user/update', async (req, res) => {
+    const { userID, fullName, country, cuisine, diet, groceryStore } = req.body;
+    try {
+        const result = await appService.updateUserInfo(userID, fullName, country, cuisine, diet, groceryStore);
+        res.json({ success: true});
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.get('/nutritional-info', async (req, res) => {
+    const { calories, fat, protein } = req.query;
+    try {
+        const result = await appService.getSelectedFieldsOfNutritionalInfo(calories, fat, protein);
+        res.json({data: result });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.get('/users/meal-plans', async (req, res) => {
+    const { minMealPlans } = req.query;
+
+    // ensure minMealPlans is a valid number
+    if (!minMealPlans || isNaN(minMealPlans)) {
+        return res.status(400).json({ success: false }); // 400 = bad request
+    }
+
+    try {
+        const result = await appService.getUsersWithMinMealPlans(Number(minMealPlans));
+        res.json({ success: true, data: result });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 
 module.exports = router;
