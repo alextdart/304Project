@@ -263,7 +263,7 @@ async function deleteMealPlan(mealplanID) {
 
 // gets all recipes with total calories over a given number. Returns list of Recipe Names.
 async function getRecipesWithCaloriesOver(calories) {
-    return await oracledb(async (connection) => {
+    return await withOracleDB(async (connection) => {
         return await connection.execute(`
             SELECT r.NAME, SUM(rhi.QUANTITY * ini.CALORIES) AS TotalCalories
             FROM RECIPE r 
@@ -286,12 +286,13 @@ async function getMealPlansCreatedBy(userID) {
         return [];
     }
 
-    return await oracledb(async (connection) => {
-        return await connection.execute(`
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`
             SELECT mp.*
             FROM MEALPLAN mp, USERCREATESMEALPLAN ucmp
             WHERE mp.MEALPLANID = ucmp.MEALPLANID AND ucmp.USERID = ${userIdAsNumber}
             `);
+        return result.rows;
     }).catch(() => {
         console.error(`Failed to get Meal Plans Created By User with ID: ${userIdAsNumber}`);
         return [];
@@ -301,7 +302,7 @@ async function getMealPlansCreatedBy(userID) {
 
 // gets ingredients in a grocery list assosciated with a mealPlan.
 async function getIngredientsInGroceryListAssosciatedWith(mealPlanID) {
-    return await oracledb(async (connection) => {
+    return await withOracleDB(async (connection) => {
         return await connection.execute(`
             SELECT gci.INGREDIENTNAME 
             FROM GROCERYLISTCONTAINSINGREDIENT gci, MEALPLAN mp
@@ -315,7 +316,7 @@ async function getIngredientsInGroceryListAssosciatedWith(mealPlanID) {
 
 // gets all the sums of the nutritional info of all of the ingredients in a recipe
 async function getTotalNutrionalInfoInRecipe(recipeID) {
-    return await oracledb(async (connection) => {
+    return await withOracleDB(async (connection) => {
         const result = await connection.execute(`
             SELECT r.NAME, SUM(rhi.QUANTITY * ini.CALORIES) AS TotalCalories, SUM(rhi.QUANTITY * ini.FAT) AS TotalFat, 
                    SUM(rhi.QUANTITY * ini.FAT) AS TotalProtein
@@ -368,7 +369,7 @@ async function updateUserInfo(userID, newFullName, newCountry, newCuisine, newDi
 
 // 2.2.5 Projection
 async function getSelectedFieldsOfNutritionalInfo(calories, fat, protein) {
-    return await oracledb(async (connection) => {
+    return await withOracleDB(async (connection) => {
 
         const fields = ["NAME"];
         if (calories) fields.push("CALORIES");
@@ -388,7 +389,7 @@ async function getSelectedFieldsOfNutritionalInfo(calories, fat, protein) {
 
 // 2.2.8 Aggregation with HAVING
 async function getUsersWithMinMealPlans(minMealPlans) {
-    return await oracledb(async (connection) => {
+    return await withOracleDB(async (connection) => {
             const result = await connection.execute(`
                 SELECT userID, COUNT(mealplanid) as mealPlanCount
                 FROM USERCREATESMEALPLAN

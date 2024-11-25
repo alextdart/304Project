@@ -20,34 +20,25 @@
     <thead>
     <tr>
         <!--Table head, need to be adjusted accordingly to align with your own.-->
-        <th>ID</th>
-        <th>Starts</th>
-        <th>Ends</th>
+        <th>Meal Plan ID</th>
+        <th>Ends At:</th>
+        <th>Starts At:</th>
         <th>Grocery List ID</th>
     </tr>
     </thead>
     <tbody>
     </tbody>
 </table>
+<div id="fetchMealPlanMsg"></div> <br>
 
 <br>
 
 <h3>Enter User ID</h3>
-<label for="userId">User ID:</label>
-<input type="text" id="userId" name="userId" placeholder="Enter User ID">
+<label for="fetchMealPlanUserId">User ID:</label>
+<input type="text" id="fetchMealPlanUserId" name="userId" placeholder="Enter User ID">
 <button id="fetchMealPlanBtn">Fetch Meal Plan</button>
 
 <script src="mealPlanScripts.js"></script>
-<script>
-    document.getElementById('fetchMealPlanBtn').addEventListener('click', () => {
-        const userId = document.getElementById('userId').value;
-        if (userId) {
-            fetchAndDisplayMealPlans(userId)
-        } else {
-            alert('Please enter a User ID');
-        }
-    });
-</script>
 
 </body>
 </html>

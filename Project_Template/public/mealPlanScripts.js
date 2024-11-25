@@ -1,6 +1,14 @@
 // Fetches data from the MealPlans and displays them.
-async function fetchAndDisplayMealPlans(userID) {
+async function fetchAndDisplayMealPlans() {
+    const userID = document.getElementById('fetchMealPlanUserId').value;
+
+    if (userID === "") {
+        console.log("No UserID inputted");
+        return;
+    }
+
     const tableElement = document.getElementById('mealPlan');
+    const messageElement = document.getElementById('findAllergicPeopleMsg');
     const tableBody = tableElement.querySelector('tbody');
 
     const response = await fetch(`/meal-plan/${userID}`, {
@@ -8,21 +16,27 @@ async function fetchAndDisplayMealPlans(userID) {
     });
 
     const responseData = await response.json();
-    const mealPlanContent = responseData.data;
+    const tableContent = responseData.data;
 
-    // Always clear old, already fetched data before new fetching process.
-    if (tableBody) {
-        tableBody.innerHTML = '';
-    }
+    if (responseData.success) {
+        messageElement.textContent = `Successfully fetched ${tableContent.length} rows`;
 
-    mealPlanContent.forEach(mp => {
-        const row = tableBody.insertRow();
-        mp.forEach((field, index) => {
-            const cell = row.insertCell(index);
-            cell.textContent = field;
+        if (tableBody) {
+            tableBody.innerHTML = '';
+        }
+
+        tableContent.forEach((row) => {
+            const newRow = tableBody.insertRow();
+            row.forEach((field, index) => {
+                const cell = newRow.insertCell(index);
+                cell.textContent = field;
+            });
         });
-    });
+    } else {
+        messageElement.textContent = `Error fetching mealplans for User with ID: ${userID}`;
+    }
 }
 
-// window.onload = function() {
-// };
+window.onload = function() {
+    document.getElementById("fetchMealPlanBtn").addEventListener("click", fetchAndDisplayMealPlans);
+};

@@ -167,11 +167,17 @@ router.get('/recipe/calories', async (req, res) => {
 
 router.get('/meal-plan/:userID', async (req, res) => {
     const { userID } = req.params; // Use path parameters
-    try {
-        const result = await appService.getMealPlansCreatedBy(userID);
-        res.json({ data: result });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    const data = await appService.getMealPlansCreatedBy(userID);
+
+    if (data) {
+        res.json({
+            success: true,
+            data: data
+        });
+    } else {
+        res.status(500).json({
+            success: false
+        });
     }
 });
 
