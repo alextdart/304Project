@@ -38,6 +38,29 @@ async function fetchAndDisplayMealPlans() {
     }
 }
 
+async function deleteMealPlan() {
+    const mealPlanID = document.getElementById(`deleteMealPlanID`).value;
+    const messageElement = document.getElementById('deleteMealPlanMsg');
+
+    if (mealPlanID === "") {
+        console.log("No mealPlanID inputted");
+        messageElement.textContent = "No Meal Plan ID inputted."
+        return;
+    }
+
+    const response = await fetch(`/meal-plan/${mealPlanID}`, {
+        method: 'DELETE'
+    });
+
+    const responseData = await response.json();
+
+    if (responseData.success) {
+        messageElement.textContent = `Successfully deleted Meal Plan ${mealPlanID}`;
+    } else {
+        messageElement.textContent = `Error deleting Meal Plan ${mealPlanID}`;
+    }
+}
+
 async function fetchAndDisplayGroceryList() {
     const mealPlanID = document.getElementById(`fetchGroceryListMealPlanID`).value;
     const messageElement = document.getElementById('fetchGroceryListMsg');
