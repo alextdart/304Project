@@ -183,15 +183,6 @@ async function getIngredientData() {
     });
 }
 
-async function getClientData() {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `SELECT * FROM CLIENT`
-        );
-        return result.rows;
-    });
-}
-
 async function updateNameDemotable(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -419,7 +410,6 @@ module.exports = {
     insertIngredient,
     selectOverallRating,
     getIngredientData,
-    getClientData,
     getRecipeData,
     getRecipeHasIngredientData,
     updateNameDemotable,

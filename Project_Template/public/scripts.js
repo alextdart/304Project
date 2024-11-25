@@ -211,35 +211,6 @@ async function fetchAndDisplayIngredient() {
             cell.textContent = field;
         });
     });
-
-    fetchTableData();
-}
-
-// Fetches data from the Client table and displays it.
-async function fetchAndDisplayClient() {
-    const tableElement = document.getElementById('clientTable');
-    const tableBody = tableElement.querySelector('tbody');
-
-    const response = await fetch('/client', {
-        method: 'GET',
-    });
-
-    const responseData = await response.json();
-    const tableContent = responseData.data;
-
-    if (tableBody) {
-        tableBody.innerHTML = ''; // Clear old data
-    }
-
-    tableContent.forEach((row) => {
-        const newRow = tableBody.insertRow();
-        row.forEach((field, index) => {
-            const cell = newRow.insertCell(index);
-            cell.textContent = field;
-        });
-    });
-
-    fetchTableData();
 }
 
 // Finds all recipes with a rating equal or greater than the specified amount
@@ -275,8 +246,6 @@ async function selectRating(event) {
                 <td>${recipe.AUTHOR}</td>
             `;
             tableBody.appendChild(row);
-
-            fetchTableData();
         });
     } else {
         messageElement.textContent = "Error finding recipes!";
@@ -354,7 +323,6 @@ async function aggregateCalories() {
                 <td>${recipeName}</td>
             `;
             tableBody.appendChild(newRow);
-            fetchTableData();
         });
     } else {
         messageElement.textContent = "Error calculating total calories!";
@@ -381,7 +349,6 @@ async function findAllergicPeople() {
                 <td>${user.fullName}</td>
             `;
             tableBody.appendChild(newRow);
-            fetchTableData();
         });
     } else {
         messageElement.textContent = "Error calculating users with every allergy!";
@@ -418,7 +385,6 @@ async function updateUserInfo(event) {
 
     if (responseData.success) {
         messageElement.textContent = "User information updated";
-        fetchTableData();
     } else {
         messageElement.textContent = "Error updating user information";
     }
@@ -455,7 +421,6 @@ async function fetchSelectedNutritionalInfo(event) {
                 <td>${item.protein}</td>
             `;
         });
-        fetchTableData();
     } else {
         messageElement.textContent = "Error fetching nutritional information";
     }
@@ -483,7 +448,6 @@ async function fetchUsersWithMinMealPlans(event) {
                 <td>${user.mealPlanCount}</td>
             `;
         });
-        fetchTableData();
     } else {
         messageElement.textContent = "Error fetching users";
     }
@@ -512,7 +476,6 @@ window.onload = function() {
 // You can invoke this after any table-modifying operation to keep consistency.
 function fetchTableData() {
     fetchAndDisplayUsers();
-    fetchAndDisplayClient();
     fetchAndDisplayRecipeHasIngredient();
     fetchAndDisplayIngredient();
     fetchAndDisplayRecipe();
