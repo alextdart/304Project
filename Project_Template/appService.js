@@ -85,15 +85,6 @@ async function fetchDemotableFromDb() {
     });
 }
 
-async function fetchClientTableFromDb() {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT * FROM CLIENT');
-        return result.rows;
-    }).catch(() => {
-        return [];
-    });
-}
-
 async function initiateDemotable() {
     return await withOracleDB(async (connection) => {
         try {
@@ -395,6 +386,22 @@ async function getSelectedFieldsOfNutritionalInfo(calories, fat, protein) {
     });
 }
 
+// 2.2.8 Aggregation with HAVING
+async function getUsersWithMinMealPlans(minMealPlans) {
+    return await oracledb(async (connection) => {
+            const result = await connection.execute(`
+                SELECT userID, COUNT(mealplanid) as mealPlanCount
+                FROM USERCREATESMEALPLAN
+                GROUP BY userID
+                HAVING COUNT(mealplanid) > :minMealPlans;
+            `, [minMealPlans]);
+            return result.rows;
+        }).catch((err) => {
+            console.error(`Failed to find users with more than ${minMealPlans} meal plans:`, err);
+            return [];
+        });
+}
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -405,8 +412,7 @@ module.exports = {
     getIngredientData,
     getRecipeData,
     getRecipeHasIngredientData,
-    updateNameDemotable, 
-    countDemotable,
+    updateNameDemotable,
     totalCaloriesPerRecipe,
     findAllergicPeople,
     countDemotable,
@@ -416,5 +422,6 @@ module.exports = {
     getIngredientsInGroceryListAssosciatedWith,
     getTotalNutrionalInfoInRecipe,
     updateUserInfo,
-    getSelectedFieldsOfNutritionalInfo
+    getSelectedFieldsOfNutritionalInfo,
+    getUsersWithMinMealPlans
 };
