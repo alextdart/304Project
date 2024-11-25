@@ -256,15 +256,31 @@ async function deleteMealPlan(mealplanID) {
     }
 
     return await withOracleDB(async (connection) => {
+        const primaryCheck = await connection.execute(`
+            SELECT *
+            FROM MEALPLAN
+        `);
+        console.log("Primary Check");
+        console.log(primaryCheck.rows);
         const result = await connection.execute(`
             DELETE 
             FROM MEALPLAN 
             WHERE MEALPLANID = ${IDAsNumber}
         `);
+        console.log("DELETE result");
         console.log(result);
+
+        await connection.commit();
+
+        const secondaryCheck = await connection.execute(`
+            SELECT *
+            FROM MEALPLAN
+        `);
+        console.log("Secondary Check");
+        console.log(secondaryCheck.rows);
         return true;
     }).catch(() => {
-        console.log("Failed to delete Meal Plan with ID: ${mealplanID}");
+        console.log(`Failed to delete Meal Plan with ID: ${mealplanID}`);
         return false;
     });
 }
@@ -400,7 +416,7 @@ async function getSelectedFieldsOfNutritionalInfo(calories, fat, protein) {
         `);
     }).catch(() => {
         console.log(`Failed to retrieve selected nutritional info.`);
-        return []
+        return [];
     });
 }
 
