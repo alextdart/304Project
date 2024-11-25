@@ -248,13 +248,20 @@ async function findAllergicPeople() {
 
 // deletes specified MealPlan
 async function deleteMealPlan(mealplanID) {
+
+    const IDAsNumber = Number(mealplanID);
+    if (isNaN(IDAsNumber)) {
+        console.error(`Invalid calories: ${mealplanID}`);
+        return null;
+    }
+
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(`
             DELETE 
             FROM MEALPLAN 
-            WHERE MEALPLANID = ${mealplanID}
+            WHERE MEALPLANID = ${IDAsNumber}
         `);
-        return true
+        return true;
     }).catch(() => {
         console.log("Failed to delete Meal Plan with ID: ${mealplanID}");
         return false;
@@ -263,18 +270,25 @@ async function deleteMealPlan(mealplanID) {
 
 // gets all recipes with total calories over a given number. Returns list of Recipe Names.
 async function getRecipesWithCaloriesOver(calories) {
+    const caloriesAsNumber = Number(calories);
+    if (isNaN(caloriesAsNumber)) {
+        console.error(`Invalid calories: ${calories}`);
+        return null;
+    }
+
     return await withOracleDB(async (connection) => {
-        return await connection.execute(`
+        result = await connection.execute(`
             SELECT r.NAME, SUM(rhi.QUANTITY * ini.CALORIES) AS TotalCalories
             FROM RECIPE r 
                 JOIN RECIPEHASINGREDIENT rhi ON r.ID = rhi.RECIPEID 
                 JOIN INGREDIENTNUTRITIONALINFO ini ON rhi.INGREDIENTNAME = ini.NAME
             GROUP BY r.NAME
-            HAVING SUM(rhi.QUANTITY * ini.CALORIES) > ${calories};
+            HAVING SUM(rhi.QUANTITY * ini.CALORIES) > ${caloriesAsNumber}
         `);
+        return result.rows;
     }).catch(() => {
-        console.log(`Failed to get recipes with calories over ${calories}`);
-        return [];
+        console.log(`Failed to get recipes with calories over ${caloriesAsNumber}`);
+        return null;
     });
 }
 
@@ -283,7 +297,7 @@ async function getMealPlansCreatedBy(userID) {
     const userIdAsNumber = Number(userID);
     if (isNaN(userIdAsNumber)) {
         console.error(`Invalid userID: ${userID}`);
-        return [];
+        return null;
     }
 
     return await withOracleDB(async (connection) => {
@@ -295,7 +309,7 @@ async function getMealPlansCreatedBy(userID) {
         return result.rows;
     }).catch(() => {
         console.error(`Failed to get Meal Plans Created By User with ID: ${userIdAsNumber}`);
-        return [];
+        return null;
     });
 }
 
@@ -310,7 +324,7 @@ async function getIngredientsInGroceryListAssosciatedWith(mealPlanID) {
         `);
     }).catch(() => {
         console.log(`Failed to get Ingredients in the Grocery List Assosciated with MealPlanID: ${mealPlanID}`);
-        return []
+        return null;
     });
 }
 
@@ -329,7 +343,7 @@ async function getTotalNutrionalInfoInRecipe(recipeID) {
         return result;
     }).catch(() => {
         console.log(`Failed to get total nutrional info in recipe with ID: ${recipeID}`);
-        return 0;
+        return null;
     })
 }
 

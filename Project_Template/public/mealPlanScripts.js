@@ -11,7 +11,7 @@ async function fetchAndDisplayMealPlans() {
     const messageElement = document.getElementById('fetchMealPlanMsg');
     const tableBody = tableElement.querySelector('tbody');
 
-    const response = await fetch(`/meal-plan/${userID}`, {
+    const response = await fetch(`/meal-plan/from-user/${userID}`, {
         method: 'GET'
     });
 

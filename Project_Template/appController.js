@@ -145,13 +145,17 @@ router.get('/division-AllergicPeople', async (req, res) => {
     }
 });
 
-router.delete('/meal-plan/:meal-plan-ID', async(req, res) => {
+router.delete('/meal-plan/:mealPlanID', async (req, res) => {
     const {mealPlanID} = req.params;
     const result = await appService.deleteMealPlan(mealPlanID);
     if (result) {
-        res.json({ success: true });
+        res.json({
+            success: true
+        });
     } else {
-        res.status(500).json({ success: false });
+        res.status(500).json({
+            success: false
+        });
     }
 });
 
@@ -171,7 +175,7 @@ router.get('/recipe/:calories', async (req, res) => {
     }
 });
 
-router.get('/meal-plan/:userID', async (req, res) => {
+router.get('/meal-plan/from-user/:userID', async (req, res) => {
     const {userID} = req.params;
     const data = await appService.getMealPlansCreatedBy(userID);
 
