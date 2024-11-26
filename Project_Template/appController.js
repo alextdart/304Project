@@ -145,53 +145,82 @@ router.get('/division-AllergicPeople', async (req, res) => {
     }
 });
 
-router.delete('/meal-plan', async(req, res) => {
-    const {mealPlanID} = req.body;
+router.delete('/meal-plan/:mealPlanID', async (req, res) => {
+    const {mealPlanID} = req.params;
     const result = await appService.deleteMealPlan(mealPlanID);
     if (result) {
-        res.json({ success: true });
+        res.json({
+            success: true
+        });
     } else {
-        res.status(500).json({ success: false });
+        res.status(500).json({
+            success: false
+        });
     }
 });
 
-router.get('/recipe/calories', async (req, res) => {
-    const { calories } = req.query; // Use query parameters
-    try {
-        const result = await appService.getRecipesWithCaloriesOver(calories);
-        res.json({ data: result });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+router.get('/recipe/:calories', async (req, res) => {
+    const {calories} = req.params;
+    const data = await appService.getRecipesWithCaloriesOver(calories);
+
+    if (data) {
+        res.json({
+            success: true,
+            data: data
+        });
+    } else {
+        res.status(500).json({
+            success: false
+        });
     }
 });
 
-router.get('/meal-plan/:userID', async (req, res) => {
-    const { userID } = req.params; // Use path parameters
-    try {
-        const result = await appService.getMealPlansCreatedBy(userID);
-        res.json({ data: result });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+router.get('/meal-plan/from-user/:userID', async (req, res) => {
+    const {userID} = req.params;
+    const data = await appService.getMealPlansCreatedBy(userID);
+
+    if (data) {
+        res.json({
+            success: true,
+            data: data
+        });
+    } else {
+        res.status(500).json({
+            success: false
+        });
     }
 });
 
-router.get('/grocery-list/:mealplanID', async (req, res) => {
-    const { mealplanID } = req.params;
-    try {
-        const result = await appService.getIngredientsInGroceryListAssosciatedWith(mealplanID);
-        res.json({ data: result });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+router.get('/grocery-list/from-meal-plan/:mealplanID', async (req, res) => {
+    const {mealplanID} = req.params;
+
+    const data = await appService.getIngredientsInGroceryListAssosciatedWith(mealplanID);
+
+    if (data) {
+        res.json({
+            success: true,
+            data: data
+        });
+    } else {
+        res.status(500).json({
+            success: false
+        });
     }
 });
 
-router.get('/recipe/nutritional-info/:recipeID', async (req, res) => {
-    const { recipeID } = req.params;
-    try {
-        const result = await appService.getTotalNutrionalInfoInRecipe(recipeID);
-        res.json({ data: result });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+router.get('/recipe/nutritional-info/from-meal-plan/:mealPlanID', async (req, res) => {
+    const {mealPlanID} = req.params;
+    const data = await appService.getTotalNutrionalInfoInRecipesFromMealPlan(mealPlanID);
+
+    if (data) {
+        res.json({
+            success: true,
+            data: data
+        });
+    } else {
+        res.status(500).json({
+            success: false
+        });
     }
 });
 
