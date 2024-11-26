@@ -129,7 +129,7 @@ async function insertRecipeHasIngredient(event) {
 
     const responseData = await response.json();
     const messageElement = document.getElementById('insertIngredientResultMsg');
-    console.log(responseData)
+
     if (responseData.success) {
         messageElement.textContent = "Ingredient inserted successfully!";
         fetchTableData();
@@ -407,7 +407,7 @@ async function updateUserInfo(event) {
     const responseData = await response.json();
     const messageElement = document.getElementById('updateUserInfoResultMsg');
     if (responseData.success) {
-        messageElement.textContent = "Name updated successfully!";
+        messageElement.textContent = "User information updated";
         fetchTableData();
     } else {
         messageElement.textContent = "Error updating name!";
@@ -435,7 +435,7 @@ async function fetchSelectedNutritionalInfo(event) {
     const tableBody = table.querySelector('tbody');
 
     if (responseData.data) {
-        messageElement.textContent = "Successfully retrieved";
+        messageElement.textContent = "Information retrieved";
 
         tableHead.innerHTML = '';
         tableBody.innerHTML = '';
