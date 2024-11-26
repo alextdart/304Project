@@ -65,6 +65,28 @@
     </form>
     <div id="insertResultMsg"></div>
 
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Update Name in DemoTable</h2>
+    <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
+    <form id="updataNameDemotable">
+        Old Name: <input type="text" id="updateOldName" placeholder="Enter Old Name" required> <br><br>
+        New Name: <input type="text" id="updateNewName" placeholder="Enter New Name" maxlength="20"> <br><br>
+
+        <button type="submit"> update </button> <br>
+    </form>
+    <!-- A placeholder to display messages related to the update operation. -->
+    <div id="updateNameResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Count the Tuples in DemoTable</h2>
+    <button id="countDemotable"> count </button> <br><br>
+    <!-- A placeholder to display the count result. -->
+    <div id="countResultMsg"></div> <br>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
     <h2>INSERTION: Insert Ingredient into Recipe </h2>
     <form id="insertIngredient">
         RecipeID: <input type="number" id="insertRecipeID" placeholder="Enter Recipe ID" required> <br><br>
@@ -109,6 +131,53 @@
         <tbody></tbody>
     </table>
 
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>UPDATE: Change User Information</h2>
+    <h3>Client Table</h3>
+    <table id="clientTable" border="1">
+        <thead>
+        <tr>
+            <th>UserID</th>
+            <th>Full Name</th>
+            <th>Country</th>
+            <th>UserPrefID</th>
+            <th>Cuisine</th>
+            <th>Diet</th>
+            <th>GroceryStore</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <p>Leave fields blank to keep existing values.</p>
+    <form id="updateUserInfoForm">
+        <label for="existingUserID">User ID:</label>
+        <input type="number" id="existingUserID" placeholder="Enter User ID" required>
+        <br><br>
+
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" placeholder="Enter New Full Name">
+        <br><br>
+
+        <label for="country">Country:</label>
+        <input type="text" id="country" placeholder="Enter New Country">
+        <br><br>
+
+        <label for="cuisine">Preferred Cuisine:</label>
+        <input type="text" id="cuisine" placeholder="Enter New Cuisine">
+        <br><br>
+
+        <label for="diet">Dietary Preferences:</label>
+        <input type="text" id="diet" placeholder="Enter New Diet">
+        <br><br>
+
+        <label for="groceryStore">Favorite Grocery Store:</label>
+        <input type="text" id="groceryStore" placeholder="Enter New Grocery Store">
+        <br><br>
+
+        <button type="submit">Update Information</button>
+    </form>
+    <div id="updateUserInfoResultMsg"></div>
 
     <br><hr><br> <!-- ========================================================================= -->
 
@@ -142,25 +211,6 @@
     </table>
 
     <div id="selectRatingMsg"></div>
-    <br><hr><br> <!-- ========================================================================= -->
-
-    <h2>Update Name in DemoTable</h2>
-    <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
-    <form id="updataNameDemotable">
-        Old Name: <input type="text" id="updateOldName" placeholder="Enter Old Name" required> <br><br>
-        New Name: <input type="text" id="updateNewName" placeholder="Enter New Name" maxlength="20"> <br><br>
-
-        <button type="submit"> update </button> <br>
-    </form>
-    <!-- A placeholder to display messages related to the update operation. -->
-    <div id="updateNameResultMsg"></div>
-
-    <br><hr><br> <!-- ========================================================================= -->
-
-    <h2>Count the Tuples in DemoTable</h2>
-    <button id="countDemotable"> count </button> <br><br>
-    <!-- A placeholder to display the count result. -->
-    <div id="countResultMsg"></div> <br>
 
     <br><hr><br> <!-- ========================================================================= -->
 

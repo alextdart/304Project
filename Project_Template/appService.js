@@ -183,6 +183,15 @@ async function getIngredientData() {
     });
 }
 
+async function getClientData() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT * FROM Client`
+        );
+        return result.rows;
+    });
+}
+
 async function updateNameDemotable(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -351,31 +360,33 @@ async function getTotalNutrionalInfoInRecipesFromMealPlan(mealPlanID) {
 }
 
 // 2.2.2 Update
-async function updateUserInfo(userID, newFullName, newCountry, newCuisine, newDiet, newGroceryStore) {
+async function updateUserInfo(existingUserID, newFullName, newCountry, newCuisine, newDiet, newGroceryStore) {
+    console.log("appSer.js p1")
+    const existingUserIDNum = Number(existingUserID);
     return await withOracleDB(async (connection) => {
-        // get previous values from userID
-        const prev = await connection.execute(
-            `SELECT FULLNAME, COUNTRY, CUISINE, DIET, GROCERYSTORE FROM CLIENT WHERE USERID=:userID`,
-            [userID],
+        // get previous values from existingUserID
+        const pastInfo = await connection.execute(
+            `SELECT FULLNAME, COUNTRY, CUISINE, DIET, GROCERYSTORE FROM CLIENT WHERE USERID=${existingUserIDNum}`,
             { autoCommit: true }
         );
 
-        if (prev.rows.length === 0) {
+        if (pastInfo.rows.length === 0) {
             throw new Error("user not found");
         }
 
-        const currentData = prev.rows[0];
-
+        const currentData = pastInfo.rows[0];
+        console.log("appSer.js p2")
+        console.log(currentData)
         // use existing data if not otherwise provided
         newFullName = newFullName || currentData[0];
         newCountry = newCountry || currentData[1];
         newCuisine = newCuisine || currentData[2];
         newDiet = newDiet || currentData[3];
         newGroceryStore = newGroceryStore || currentData[4];
-
+        console.log("appSer.js p3")
         const result = await connection.execute(
-            `UPDATE CLIENT SET FULLNAME=:newFullName, COUNTRY=:newCountry, CUISINE=:newCuisine, DIET=:newDiet, GROCERYSTORE=:newGroceryStore where USERID=:userID`,
-            [userID, newFullName, newCountry, newCuisine, newDiet, newGroceryStore],
+            `UPDATE CLIENT SET FULLNAME=:newFullName, COUNTRY=:newCountry, CUISINE=:newCuisine, DIET=:newDiet, GROCERYSTORE=:newGroceryStore where USERID=:existingUserIDNum`,
+            [newFullName, newCountry, newCuisine, newDiet, newGroceryStore, existingUserIDNum],
             { autoCommit: true }
         );
         return result.rowsAffected && result.rowsAffected > 0;
@@ -430,6 +441,7 @@ module.exports = {
     getIngredientData,
     getRecipeData,
     getRecipeHasIngredientData,
+    getClientData,
     updateNameDemotable,
     totalCaloriesPerRecipe,
     findAllergicPeople,

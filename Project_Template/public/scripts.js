@@ -129,7 +129,7 @@ async function insertRecipeHasIngredient(event) {
 
     const responseData = await response.json();
     const messageElement = document.getElementById('insertIngredientResultMsg');
-
+    console.log(responseData)
     if (responseData.success) {
         messageElement.textContent = "Ingredient inserted successfully!";
         fetchTableData();
@@ -194,6 +194,31 @@ async function fetchAndDisplayIngredient() {
     const tableBody = tableElement.querySelector('tbody');
 
     const response = await fetch('/ingredient', {
+        method: 'GET',
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+
+    if (tableBody) {
+        tableBody.innerHTML = ''; // Clear old data
+    }
+
+    tableContent.forEach((row) => {
+        const newRow = tableBody.insertRow();
+        row.forEach((field, index) => {
+            const cell = newRow.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Fetches data from the Client table and displays it.
+async function fetchAndDisplayClient() {
+    const tableElement = document.getElementById('clientTable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/client', {
         method: 'GET',
     });
 
@@ -357,36 +382,39 @@ async function findAllergicPeople() {
 
 async function updateUserInfo(event) {
     event.preventDefault();
+    console.log("scripts.js p1")
 
-    const userID = document.getElementById('userID').value;
+    const existingUserID = parseInt(document.getElementById('existingUserID').value, 10);
+    console.log(existingUserID, typeof existingUserID);
     const fullName = document.getElementById('fullName').value;
     const country = document.getElementById('country').value;
     const cuisine = document.getElementById('cuisine').value;
     const diet = document.getElementById('diet').value;
     const groceryStore = document.getElementById('groceryStore').value;
-
-    const response = await fetch('/user/update', {
+    console.log("scripts.js p2")
+    const response = await fetch('/user/updateInfo', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            userID,
-            fullName,
-            country,
-            cuisine,
-            diet,
-            groceryStore
+            existingUserID: existingUserID,
+            newFullName: fullName,
+            newCountry: country,
+            newCuisine: cuisine,
+            newDiet: diet,
+            newGroceryStore: groceryStore
         })
     });
 
     const responseData = await response.json();
     const messageElement = document.getElementById('updateUserInfoResultMsg');
-
+    console.log("scripts.js p3")
     if (responseData.success) {
-        messageElement.textContent = "User information updated";
+        messageElement.textContent = "Name updated successfully!";
+        fetchTableData();
     } else {
-        messageElement.textContent = "Error updating user information";
+        messageElement.textContent = "Error updating name!";
     }
 }
 
@@ -463,13 +491,13 @@ window.onload = function() {
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     document.getElementById("insertIngredient").addEventListener("submit", insertRecipeHasIngredient);
     document.getElementById("selectRatingForm").addEventListener("submit", selectRating);
-    document.getElementById("updateNameDemotable").addEventListener("submit", updateNameDemotable);
+    //document.getElementById("updateNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("aggregateCalories").addEventListener("click", aggregateCalories);
     document.getElementById("findAllergicPeople").addEventListener("click", findAllergicPeople);
     document.getElementById("updateUserInfoForm").addEventListener("submit", updateUserInfo);
-    document.getElementById("nutritionalInfoForm").addEventListener("submit", fetchSelectedNutritionalInfo);
-    document.getElementById("fetchUsersWithMinMealPlansForm").addEventListener("submit", fetchUsersWithMinMealPlans);
+    //document.getElementById("nutritionalInfoForm").addEventListener("submit", fetchSelectedNutritionalInfo);
+    //document.getElementById("fetchUsersWithMinMealPlansForm").addEventListener("submit", fetchUsersWithMinMealPlans);
 };
 
 // General function to refresh the displayed table data. 
@@ -479,4 +507,5 @@ function fetchTableData() {
     fetchAndDisplayRecipeHasIngredient();
     fetchAndDisplayIngredient();
     fetchAndDisplayRecipe();
+    fetchAndDisplayClient();
 }
