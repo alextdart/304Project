@@ -410,7 +410,7 @@ async function updateUserInfo(event) {
         messageElement.textContent = "User information updated";
         fetchTableData();
     } else {
-        messageElement.textContent = "Error updating name!";
+        messageElement.textContent = "Error updating user information";
     }
 }
 
