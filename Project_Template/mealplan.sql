@@ -235,6 +235,8 @@ INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (2, 
 INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (3, 'Tomato', 2);
 INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (4, 'Rice', 5);
 INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (5, 'Diced Tomato', 7);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (4, 'Water', 2);
+INSERT INTO RecipeHasIngredient (recipeID, ingredientName, quantity) VALUES (5, 'Water', 10);
 
 INSERT INTO MealPlanContainsRecipe (mealPlanID, recipeID) VALUES (1, 1);
 INSERT INTO MealPlanContainsRecipe (mealPlanID, recipeID) VALUES (1, 2);

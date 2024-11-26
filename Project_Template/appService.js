@@ -366,6 +366,26 @@ async function getTotalNutrionalInfoInRecipesFromMealPlan(mealPlanID) {
     })
 }
 
+async function getRecipesWithAtleastOneIngredientInNumberOfRecipes(numRecipes) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`
+            SELECT DISTINCT r.NAME
+            FROM RECIPE r
+                     JOIN RECIPEHASINGREDIENT rhi ON r.ID = rhi.RECIPEID
+            WHERE rhi.INGREDIENTNAME IN (
+                SELECT INGREDIENTNAME
+                FROM RECIPEHASINGREDIENT
+                GROUP BY INGREDIENTNAME
+                HAVING COUNT(DISTINCT RECIPEID) >= ${numRecipes}
+            )
+        `);
+        return result.rows;
+    }).catch(() => {
+        console.log(`Failed to get all recipes with ingredients in at least ${numRecipes} total recipes.`);
+        return null;
+    })
+}
+
 // 2.2.2 Update
 async function updateUserInfo(userID, newFullName, newCountry, newCuisine, newDiet, newGroceryStore) {
     return await withOracleDB(async (connection) => {
@@ -455,6 +475,7 @@ module.exports = {
     getMealPlansCreatedBy,
     getIngredientsInGroceryListAssosciatedWith,
     getTotalNutrionalInfoInRecipesFromMealPlan,
+    getRecipesWithAtleastOneIngredientInNumberOfRecipes,
     updateUserInfo,
     getSelectedFieldsOfNutritionalInfo,
     getUsersWithMinMealPlans

@@ -118,6 +118,29 @@
 <input type="text" id="fetchRecipeOverCalories" name="userId" placeholder="Enter Calories">
 <button id="fetchRecipeOverCaloriesBtn">Fetch Recipes</button>
 
+<br><hr><br> <!-- ========================================================================= -->
+
+<h2>Get all recipes with at least one ingredient that can be used in more than a given number of recipes</h2>
+<table id="recipesWithMultiUseIngredients" border="1">
+    <thead>
+    <tr>
+        <!--Table head, need to be adjusted accordingly to align with your own.-->
+        <th>Recipe Name</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<div id="fetchRecipesMultiUseIngMsg"></div>
+
+<br>
+
+<h3>Enter the number of recipes at least one ingredient must belong to.</h3>
+<label for="fetchRecipesMultiUseIng"># of Recipes</label>
+<input type="text" id="fetchRecipesMultiUseIng" name="userId" placeholder="Enter Number Of Recipes">
+<button id="fetchRecipesMultiUseIngBtn">Fetch Recipes</button>
+
 <script src="mealPlanScripts.js"></script>
 
 </body>

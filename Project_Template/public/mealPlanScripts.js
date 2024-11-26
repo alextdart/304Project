@@ -178,10 +178,50 @@ async function fetchRecipesOverCalories() {
     }
 }
 
+async function fetchRecipesWithMultiUseIngredients() {
+    const recipes = document.getElementById(`fetchRecipesMultiUseIng`).value;
+    const messageElement = document.getElementById('fetchRecipesMultiUseIngMsg');
+
+    if (recipes === "") {
+        console.log("No number inputted");
+        messageElement.textContent = "No number inputted."
+        return;
+    }
+
+    const tableElement = document.getElementById('recipesWithMultiUseIngredients');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch(`/recipe/with-ingredients-in-atleast-recipes/${recipes}`, {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+
+    if (responseData.success) {
+        messageElement.textContent = `Successfully fetched ${tableContent.length} row(s).`;
+
+        if (tableBody) {
+            tableBody.innerHTML = '';
+        }
+
+        tableContent.forEach((row) => {
+            const newRow = tableBody.insertRow();
+            row.forEach((field, index) => {
+                const cell = newRow.insertCell(index);
+                cell.textContent = field;
+            });
+        });
+    } else {
+        messageElement.textContent = `Error fetching recipes with ingredients in at least ${calories} recipes.`;
+    }
+}
+
 window.onload = function() {
     document.getElementById("fetchMealPlanBtn").addEventListener("click", fetchAndDisplayMealPlans);
     document.getElementById("fetchGroceryListBtn").addEventListener("click", fetchAndDisplayGroceryList);
     document.getElementById("fetchRecipesBtn").addEventListener("click", fetchAndDisplayRecipes);
     document.getElementById("deleteMealPlanBtn").addEventListener("click", deleteMealPlan);
     document.getElementById("fetchRecipeOverCaloriesBtn").addEventListener("click", fetchRecipesOverCalories);
+    document.getElementById("fetchRecipesMultiUserIngBtn").addEventListener("click", fetchRecipesWithMultiUseIngredients);
 };
