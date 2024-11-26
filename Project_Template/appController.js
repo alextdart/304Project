@@ -159,7 +159,7 @@ router.delete('/meal-plan/:mealPlanID', async (req, res) => {
     }
 });
 
-router.get('/recipe/:calories', async (req, res) => {
+router.get('/recipe/with-calories-over/:calories', async (req, res) => {
     const {calories} = req.params;
     const data = await appService.getRecipesWithCaloriesOver(calories);
 

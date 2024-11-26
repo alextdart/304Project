@@ -269,6 +269,12 @@ INSERT INTO Rating (ratingID, overallRating, difficultyRating, userID, recipeID)
 INSERT INTO Rating (ratingID, overallRating, difficultyRating, userID, recipeID) VALUES  (4, 3, 4, 5, 4);
 INSERT INTO Rating (ratingID, overallRating, difficultyRating, userID, recipeID) VALUES  (5, 2, 5, 2, 3);
 
+INSERT INTO USERCREATESMEALPLAN(userID, mealPlanID) VALUES (2, 2);
+INSERT INTO USERCREATESMEALPLAN(userID, mealPlanID) VALUES (1, 4);
+INSERT INTO USERCREATESMEALPLAN(userID, mealPlanID) VALUES (2, 3);
+INSERT INTO USERCREATESMEALPLAN(userID, mealPlanID) VALUES (1, 5);
+INSERT INTO USERCREATESMEALPLAN(userID, mealPlanID) VALUES (3, 1);
+
 
 
 
