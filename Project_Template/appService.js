@@ -375,7 +375,6 @@ async function updateUserInfo(existingUserID, newFullName, newCountry, newCuisin
         }
 
         const currentData = pastInfo.rows[0];
-        console.log(currentData)
         // use existing data if not otherwise provided
         newFullName = newFullName || currentData[0];
         newCountry = newCountry || currentData[1];

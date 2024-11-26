@@ -430,20 +430,40 @@ async function fetchSelectedNutritionalInfo(event) {
     const response = await fetch(`/nutritional-info?${queryParams.toString()}`);
     const responseData = await response.json();
     const messageElement = document.getElementById('nutritionalInfoResultMsg');
-    const tableBody = document.querySelector("#nutritionalInfoTable tbody");
+    const table = document.getElementById('nutritionalInfoTable');
+    const tableHead = table.querySelector('thead');
+    const tableBody = table.querySelector('tbody');
 
-    if (responseData.success) {
-        messageElement.textContent = "Information retrieved";
+    if (responseData.data) {
+        messageElement.textContent = "Successfully retrieved";
+        console.log("Response Data:", responseData);
+
+
+        tableHead.innerHTML = '';
         tableBody.innerHTML = '';
 
+        // headers
+        const selectedFields = [];
+        const headerRow = document.createElement('tr');
+        if (responseData.data.length > 0) {
+            Object.keys(responseData.data[0]).forEach((key) => {
+                const headerCell = document.createElement('th');
+                headerCell.textContent = key.charAt(0).toUpperCase() + key.slice(1);
+                headerRow.appendChild(headerCell);
+                selectedFields.push(key);
+            });
+            tableHead.appendChild(headerRow);
+        }
+
+        // rows
         responseData.data.forEach((item) => {
-            const newRow = tableBody.insertRow();
-            newRow.innerHTML = `
-                <td>${item.recipeID}</td>
-                <td>${item.calories}</td>
-                <td>${item.fat}</td>
-                <td>${item.protein}</td>
-            `;
+            const newRow = document.createElement('tr');
+            selectedFields.forEach((field) => {
+                const cell = document.createElement('td');
+                cell.textContent = item[field] ?? '';
+                newRow.appendChild(cell);
+            });
+            tableBody.appendChild(newRow);
         });
     } else {
         messageElement.textContent = "Error fetching nutritional information";
@@ -492,7 +512,7 @@ window.onload = function() {
     document.getElementById("aggregateCalories").addEventListener("click", aggregateCalories);
     document.getElementById("findAllergicPeople").addEventListener("click", findAllergicPeople);
     document.getElementById("updateUserInfoForm").addEventListener("submit", updateUserInfo);
-    //document.getElementById("nutritionalInfoForm").addEventListener("submit", fetchSelectedNutritionalInfo);
+    document.getElementById("nutritionalInfoForm").addEventListener("submit", fetchSelectedNutritionalInfo);
     //document.getElementById("fetchUsersWithMinMealPlansForm").addEventListener("submit", fetchUsersWithMinMealPlans);
 };
 

@@ -214,6 +214,41 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
+    <h2>PROJECTION: Select the Quality of Recipes </h2>
+    <form id="nutritionalInfoForm">
+        <h3>Select Nutritional Information to Display:</h3>
+
+        <label for="calories">
+            <input type="checkbox" id="calories" name="calories"> Calories
+        </label>
+        <br>
+
+        <label for="fat">
+            <input type="checkbox" id="fat" name="fat"> Fat
+        </label>
+        <br>
+
+        <label for="protein">
+            <input type="checkbox" id="protein" name="protein"> Protein
+        </label>
+        <br><br>
+
+        <button type="submit">Fetch</button>
+    </form>
+
+    <!-- Message to Display Status -->
+    <p id="nutritionalInfoResultMsg"></p>
+
+    <!-- Table to Display Nutritional Information -->
+    <table id="nutritionalInfoTable" border="1">
+        <thead>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
     <h2>AGGREGATION: Total Calories per Recipe</h2>
     <button id="aggregateCalories"> Show Me </button> <br><br>
     <h3>Total Calories Per Recipe</h3>
