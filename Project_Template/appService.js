@@ -397,9 +397,9 @@ async function getSelectedFieldsOfNutritionalInfo(calories, fat, protein) {
     return await withOracleDB(async (connection) => {
 
         const fields = ["NAME"];
-        if (calories) fields.push("CALORIES");
-        if (fat) fields.push("FAT");
-        if (protein) fields.push("PROTEIN");
+        if (calories === "true") fields.push("CALORIES");
+        if (fat === "true") fields.push("FAT");
+        if (protein === "true") fields.push("PROTEIN");
         const fieldsString = fields.join(", ");
 
         return await connection.execute(`

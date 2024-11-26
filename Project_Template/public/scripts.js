@@ -436,31 +436,27 @@ async function fetchSelectedNutritionalInfo(event) {
 
     if (responseData.data) {
         messageElement.textContent = "Successfully retrieved";
-        console.log("Response Data:", responseData);
-
 
         tableHead.innerHTML = '';
         tableBody.innerHTML = '';
 
         // headers
-        const selectedFields = [];
+        const selectedFields = responseData.data.metaData.map((column) => column.name);
         const headerRow = document.createElement('tr');
-        if (responseData.data.length > 0) {
-            Object.keys(responseData.data[0]).forEach((key) => {
-                const headerCell = document.createElement('th');
-                headerCell.textContent = key.charAt(0).toUpperCase() + key.slice(1);
-                headerRow.appendChild(headerCell);
-                selectedFields.push(key);
-            });
-            tableHead.appendChild(headerRow);
-        }
+
+        selectedFields.forEach((field) => {
+            const headerCell = document.createElement('th');
+            headerCell.textContent = field.charAt(0).toUpperCase() + field.slice(1).toLowerCase();
+            headerRow.appendChild(headerCell);
+        });
+        tableHead.appendChild(headerRow);
 
         // rows
-        responseData.data.forEach((item) => {
+        responseData.data.rows.forEach((row) => {
             const newRow = document.createElement('tr');
-            selectedFields.forEach((field) => {
+            row.forEach((value) => {
                 const cell = document.createElement('td');
-                cell.textContent = item[field] ?? '';
+                cell.textContent = value ?? '';
                 newRow.appendChild(cell);
             });
             tableBody.appendChild(newRow);
