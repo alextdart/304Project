@@ -382,16 +382,13 @@ async function findAllergicPeople() {
 
 async function updateUserInfo(event) {
     event.preventDefault();
-    console.log("scripts.js p1")
 
     const existingUserID = parseInt(document.getElementById('existingUserID').value, 10);
-    console.log(existingUserID, typeof existingUserID);
     const fullName = document.getElementById('fullName').value;
     const country = document.getElementById('country').value;
     const cuisine = document.getElementById('cuisine').value;
     const diet = document.getElementById('diet').value;
     const groceryStore = document.getElementById('groceryStore').value;
-    console.log("scripts.js p2")
     const response = await fetch('/user/updateInfo', {
         method: 'POST',
         headers: {
@@ -409,7 +406,6 @@ async function updateUserInfo(event) {
 
     const responseData = await response.json();
     const messageElement = document.getElementById('updateUserInfoResultMsg');
-    console.log("scripts.js p3")
     if (responseData.success) {
         messageElement.textContent = "Name updated successfully!";
         fetchTableData();

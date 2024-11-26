@@ -236,11 +236,9 @@ router.get('/recipe/nutritional-info/from-meal-plan/:mealPlanID', async (req, re
 
 router.post('/user/updateInfo', async (req, res) => {
     const { existingUserID, newFullName, newCountry, newCuisine, newDiet, newGroceryStore } = req.body;
-    console.log("appCon.js p1")
     const updateResult = await appService.updateUserInfo(existingUserID, newFullName, newCountry, newCuisine, newDiet, newGroceryStore);
     if (updateResult) {
         res.json({ success: true})
-        console.log("appCon.js p2")
     } else {
         res.status(500).json({ success: false });
     }
