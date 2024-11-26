@@ -79,6 +79,16 @@ router.get('/ingredient', async (req, res) => {
     }
 });
 
+router.get('/client', async (req, res) => {
+    try {
+        const data = await appService.getClientData();
+        res.json({ success: true, data });
+    } catch (error) {
+        console.error('Error fetching Client data:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+});
+
 
 router.post("/select-overallRating", async (req, res) => {
     const { overallRating } = req.body;
@@ -224,13 +234,13 @@ router.get('/recipe/nutritional-info/from-meal-plan/:mealPlanID', async (req, re
     }
 });
 
-router.post('/user/update', async (req, res) => {
-    const { userID, fullName, country, cuisine, diet, groceryStore } = req.body;
-    try {
-        const result = await appService.updateUserInfo(userID, fullName, country, cuisine, diet, groceryStore);
-        res.json({ success: true});
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+router.post('/user/updateInfo', async (req, res) => {
+    const { existingUserID, newFullName, newCountry, newCuisine, newDiet, newGroceryStore } = req.body;
+    const updateResult = await appService.updateUserInfo(existingUserID, newFullName, newCountry, newCuisine, newDiet, newGroceryStore);
+    if (updateResult) {
+        res.json({ success: true})
+    } else {
+        res.status(500).json({ success: false });
     }
 });
 

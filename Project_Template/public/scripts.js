@@ -213,6 +213,31 @@ async function fetchAndDisplayIngredient() {
     });
 }
 
+// Fetches data from the Client table and displays it.
+async function fetchAndDisplayClient() {
+    const tableElement = document.getElementById('clientTable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/client', {
+        method: 'GET',
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+
+    if (tableBody) {
+        tableBody.innerHTML = ''; // Clear old data
+    }
+
+    tableContent.forEach((row) => {
+        const newRow = tableBody.insertRow();
+        row.forEach((field, index) => {
+            const cell = newRow.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
 // Finds all recipes with a rating equal or greater than the specified amount
 async function selectRating(event) {
     event.preventDefault();
@@ -358,33 +383,32 @@ async function findAllergicPeople() {
 async function updateUserInfo(event) {
     event.preventDefault();
 
-    const userID = document.getElementById('userID').value;
+    const existingUserID = parseInt(document.getElementById('existingUserID').value, 10);
     const fullName = document.getElementById('fullName').value;
     const country = document.getElementById('country').value;
     const cuisine = document.getElementById('cuisine').value;
     const diet = document.getElementById('diet').value;
     const groceryStore = document.getElementById('groceryStore').value;
-
-    const response = await fetch('/user/update', {
+    const response = await fetch('/user/updateInfo', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            userID,
-            fullName,
-            country,
-            cuisine,
-            diet,
-            groceryStore
+            existingUserID: existingUserID,
+            newFullName: fullName,
+            newCountry: country,
+            newCuisine: cuisine,
+            newDiet: diet,
+            newGroceryStore: groceryStore
         })
     });
 
     const responseData = await response.json();
     const messageElement = document.getElementById('updateUserInfoResultMsg');
-
     if (responseData.success) {
         messageElement.textContent = "User information updated";
+        fetchTableData();
     } else {
         messageElement.textContent = "Error updating user information";
     }
@@ -406,20 +430,36 @@ async function fetchSelectedNutritionalInfo(event) {
     const response = await fetch(`/nutritional-info?${queryParams.toString()}`);
     const responseData = await response.json();
     const messageElement = document.getElementById('nutritionalInfoResultMsg');
-    const tableBody = document.querySelector("#nutritionalInfoTable tbody");
+    const table = document.getElementById('nutritionalInfoTable');
+    const tableHead = table.querySelector('thead');
+    const tableBody = table.querySelector('tbody');
 
-    if (responseData.success) {
+    if (responseData.data) {
         messageElement.textContent = "Information retrieved";
+
+        tableHead.innerHTML = '';
         tableBody.innerHTML = '';
 
-        responseData.data.forEach((item) => {
-            const newRow = tableBody.insertRow();
-            newRow.innerHTML = `
-                <td>${item.recipeID}</td>
-                <td>${item.calories}</td>
-                <td>${item.fat}</td>
-                <td>${item.protein}</td>
-            `;
+        // headers
+        const selectedFields = responseData.data.metaData.map((column) => column.name);
+        const headerRow = document.createElement('tr');
+
+        selectedFields.forEach((field) => {
+            const headerCell = document.createElement('th');
+            headerCell.textContent = field.charAt(0).toUpperCase() + field.slice(1).toLowerCase();
+            headerRow.appendChild(headerCell);
+        });
+        tableHead.appendChild(headerRow);
+
+        // rows
+        responseData.data.rows.forEach((row) => {
+            const newRow = document.createElement('tr');
+            row.forEach((value) => {
+                const cell = document.createElement('td');
+                cell.textContent = value ?? '';
+                newRow.appendChild(cell);
+            });
+            tableBody.appendChild(newRow);
         });
     } else {
         messageElement.textContent = "Error fetching nutritional information";
@@ -463,13 +503,13 @@ window.onload = function() {
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     document.getElementById("insertIngredient").addEventListener("submit", insertRecipeHasIngredient);
     document.getElementById("selectRatingForm").addEventListener("submit", selectRating);
-    document.getElementById("updateNameDemotable").addEventListener("submit", updateNameDemotable);
+    //document.getElementById("updateNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("aggregateCalories").addEventListener("click", aggregateCalories);
     document.getElementById("findAllergicPeople").addEventListener("click", findAllergicPeople);
     document.getElementById("updateUserInfoForm").addEventListener("submit", updateUserInfo);
     document.getElementById("nutritionalInfoForm").addEventListener("submit", fetchSelectedNutritionalInfo);
-    document.getElementById("fetchUsersWithMinMealPlansForm").addEventListener("submit", fetchUsersWithMinMealPlans);
+    //document.getElementById("fetchUsersWithMinMealPlansForm").addEventListener("submit", fetchUsersWithMinMealPlans);
 };
 
 // General function to refresh the displayed table data. 
@@ -479,4 +519,5 @@ function fetchTableData() {
     fetchAndDisplayRecipeHasIngredient();
     fetchAndDisplayIngredient();
     fetchAndDisplayRecipe();
+    fetchAndDisplayClient();
 }
