@@ -188,6 +188,8 @@ async function fetchRecipesWithMultiUseIngredients() {
         return;
     }
 
+    console.log("Is getting recipes.");
+
     const tableElement = document.getElementById('recipesWithMultiUseIngredients');
     const tableBody = tableElement.querySelector('tbody');
 
@@ -223,5 +225,5 @@ window.onload = function() {
     document.getElementById("fetchRecipesBtn").addEventListener("click", fetchAndDisplayRecipes);
     document.getElementById("deleteMealPlanBtn").addEventListener("click", deleteMealPlan);
     document.getElementById("fetchRecipeOverCaloriesBtn").addEventListener("click", fetchRecipesOverCalories);
-    document.getElementById("fetchRecipesMultiUserIngBtn").addEventListener("click", fetchRecipesWithMultiUseIngredients);
+    document.getElementById("fetchRecipesMultiUseIngBtn").addEventListener("click", fetchRecipesWithMultiUseIngredients);
 };

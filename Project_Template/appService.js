@@ -371,7 +371,7 @@ async function getRecipesWithAtleastOneIngredientInNumberOfRecipes(numRecipes) {
         const result = await connection.execute(`
             SELECT DISTINCT r.NAME
             FROM RECIPE r
-                     JOIN RECIPEHASINGREDIENT rhi ON r.ID = rhi.RECIPEID
+                JOIN RECIPEHASINGREDIENT rhi ON r.ID = rhi.RECIPEID
             WHERE rhi.INGREDIENTNAME IN (
                 SELECT INGREDIENTNAME
                 FROM RECIPEHASINGREDIENT
