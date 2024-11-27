@@ -477,14 +477,18 @@ async function fetchUsersWithMinMealPlans(event) {
     const tableBody = document.querySelector("#usersWithMinMealPlansTable tbody");
 
     if (responseData.success) {
-        messageElement.textContent = "Users found";
+        if (responseData.length > 0) {
+            messageElement.textContent = "Users found";
+        } else {
+            messageElement.textContent = "No such users exist";
+        }
         tableBody.innerHTML = '';
         console.log(responseData)
-        responseData.data.forEach((user) => {
+        responseData.data.forEach((row) => {
             const newRow = tableBody.insertRow();
             newRow.innerHTML = `
-                <td>${user.userID}</td>
-                <td>${user.mealPlanCount}</td>
+                <td>${row[0]}</td>
+                <td>${row[1]}</td>
             `;
         });
     } else {
