@@ -32,7 +32,7 @@ async function checkDbConnection() {
         statusElem.textContent = text;
     })
     .catch((error) => {
-        statusElem.textContent = 'connection timed out';  // Adjust error handling if required.
+        statusElem.textContent = ('connection timed out, '+ error);  // Adjust error handling if required.
     });
 }
 
@@ -477,15 +477,18 @@ async function fetchUsersWithMinMealPlans(event) {
     const tableBody = document.querySelector("#usersWithMinMealPlansTable tbody");
 
     if (responseData.success) {
-        messageElement.textContent = "Users found";
+        if (responseData.length > 0) {
+            messageElement.textContent = "Users found";
+        } else {
+            messageElement.textContent = "No such users exist";
+        }
         tableBody.innerHTML = '';
-
-        responseData.data.forEach((user) => {
+        console.log(responseData)
+        responseData.data.forEach((row) => {
             const newRow = tableBody.insertRow();
             newRow.innerHTML = `
-                <td>${user.userID}</td>
-                <td>${user.fullName}</td>
-                <td>${user.mealPlanCount}</td>
+                <td>${row[0]}</td>
+                <td>${row[1]}</td>
             `;
         });
     } else {
