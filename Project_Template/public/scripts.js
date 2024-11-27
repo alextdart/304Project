@@ -479,12 +479,11 @@ async function fetchUsersWithMinMealPlans(event) {
     if (responseData.success) {
         messageElement.textContent = "Users found";
         tableBody.innerHTML = '';
-
+        console.log(responseData)
         responseData.data.forEach((user) => {
             const newRow = tableBody.insertRow();
             newRow.innerHTML = `
                 <td>${user.userID}</td>
-                <td>${user.fullName}</td>
                 <td>${user.mealPlanCount}</td>
             `;
         });

@@ -214,7 +214,7 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>PROJECTION: Select the Quality of Recipes </h2>
+    <h2>PROJECTION: Select Fields to See </h2>
     <form id="nutritionalInfoForm">
         <h3>Select Nutritional Information to Display:</h3>
 
@@ -249,7 +249,7 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>AGGREGATION: Total Calories per Recipe</h2>
+    <h2>AGGREGATION with GROUP BY: Total Calories per Recipe</h2>
     <button id="aggregateCalories"> Show Me </button> <br><br>
     <h3>Total Calories Per Recipe</h3>
     <table id="totalCaloriesPerRecipe" border="1">
@@ -264,6 +264,26 @@
         </tbody>
     </table>
     <div id="aggregateCaloriesMsg"></div> <br>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>AGGREGATION with HAVING: Users with >X MealPlans</h2>
+    <form id="usersWithMinMealPlansForm" onsubmit="fetchUsersWithMinMealPlans(event)">
+        <label for="minMealPlans">Minimum Meal Plans:</label>
+        <input type="number" id="minMealPlans" placeholder="Enter minimum number of meal plans" required>
+        <button type="submit">Search</button>
+    </form>
+    <div id="usersWithMinMealPlansResultMsg"></div>
+    <table id="usersWithMinMealPlansTable" border="1">
+        <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Meal Plan Count</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
     <br><hr><br> <!-- ========================================================================= -->
 
