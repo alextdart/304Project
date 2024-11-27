@@ -169,9 +169,25 @@ router.delete('/meal-plan/:mealPlanID', async (req, res) => {
     }
 });
 
-router.get('/recipe/:calories', async (req, res) => {
+router.get('/recipe/with-calories-over/:calories', async (req, res) => {
     const {calories} = req.params;
     const data = await appService.getRecipesWithCaloriesOver(calories);
+
+    if (data) {
+        res.json({
+            success: true,
+            data: data
+        });
+    } else {
+        res.status(500).json({
+            success: false
+        });
+    }
+});
+
+router.get('/recipe/with-ingredients-in-atleast-recipes/:numRecipes', async (req, res) => {
+    const {numRecipes} = req.params;
+    const data = await appService.getRecipesWithAtleastOneIngredientInNumberOfRecipes(numRecipes);
 
     if (data) {
         res.json({

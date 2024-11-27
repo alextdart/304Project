@@ -265,15 +265,31 @@ async function deleteMealPlan(mealplanID) {
     }
 
     return await withOracleDB(async (connection) => {
+        const primaryCheck = await connection.execute(`
+            SELECT *
+            FROM MEALPLAN
+        `);
+        console.log("Primary Check");
+        console.log(primaryCheck.rows);
         const result = await connection.execute(`
             DELETE 
             FROM MEALPLAN 
             WHERE MEALPLANID = ${IDAsNumber}
         `);
+        console.log("DELETE result");
         console.log(result);
+
+        await connection.commit();
+
+        const secondaryCheck = await connection.execute(`
+            SELECT *
+            FROM MEALPLAN
+        `);
+        console.log("Secondary Check");
+        console.log(secondaryCheck.rows);
         return true;
     }).catch(() => {
-        console.log("Failed to delete Meal Plan with ID: ${mealplanID}");
+        console.log(`Failed to delete Meal Plan with ID: ${mealplanID}`);
         return false;
     });
 }
@@ -359,6 +375,26 @@ async function getTotalNutrionalInfoInRecipesFromMealPlan(mealPlanID) {
     })
 }
 
+async function getRecipesWithAtleastOneIngredientInNumberOfRecipes(numRecipes) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`
+            SELECT DISTINCT r.NAME
+            FROM RECIPE r
+                JOIN RECIPEHASINGREDIENT rhi ON r.ID = rhi.RECIPEID
+            WHERE rhi.INGREDIENTNAME IN (
+                SELECT INGREDIENTNAME
+                FROM RECIPEHASINGREDIENT
+                GROUP BY INGREDIENTNAME
+                HAVING COUNT(DISTINCT RECIPEID) >= ${numRecipes}
+            )
+        `);
+        return result.rows;
+    }).catch(() => {
+        console.log(`Failed to get all recipes with ingredients in at least ${numRecipes} total recipes.`);
+        return null;
+    })
+}
+
 // 2.2.2 Update
 async function updateUserInfo(existingUserID, newFullName, newCountry, newCuisine, newDiet, newGroceryStore) {
     const existingUserIDNum = Number(existingUserID);
@@ -408,7 +444,7 @@ async function getSelectedFieldsOfNutritionalInfo(calories, fat, protein) {
         `);
     }).catch(() => {
         console.log(`Failed to retrieve selected nutritional info.`);
-        return []
+        return [];
     });
 }
 
@@ -447,6 +483,7 @@ module.exports = {
     getMealPlansCreatedBy,
     getIngredientsInGroceryListAssosciatedWith,
     getTotalNutrionalInfoInRecipesFromMealPlan,
+    getRecipesWithAtleastOneIngredientInNumberOfRecipes,
     updateUserInfo,
     getSelectedFieldsOfNutritionalInfo,
     getUsersWithMinMealPlans
