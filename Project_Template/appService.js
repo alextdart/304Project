@@ -383,11 +383,10 @@ async function getSelectedFieldsOfNutritionalInfo(calories, fat, protein) {
 
 // 2.2.8 Aggregation with HAVING
 async function getUsersWithMinMealPlans(minMealPlans) {
-    const minMealPlansAsNumber = Number(minMealPlans);
     return await withOracleDB(async (connection) => {
             const result = await connection.execute(`
                 SELECT userID, COUNT(mealPlanID) as mealPlanCount FROM UserCreatesMealPlan GROUP BY userID
-                HAVING COUNT(mealPlanID) > :minMealPlansAsNumber`, [minMealPlansAsNumber],
+                HAVING COUNT(mealPlanID) > :minMealPlans`, [Number(minMealPlans)],
                 { autoCommit: true });
             return result.rows;
         }).catch((err) => {

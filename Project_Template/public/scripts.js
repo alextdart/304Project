@@ -352,20 +352,18 @@ async function fetchUsersWithMinMealPlans(event) {
     event.preventDefault();
 
     const minMealPlans = document.getElementById('minMealPlans').value;
-
     const response = await fetch(`/users/meal-plans?minMealPlans=${minMealPlans}`);
     const responseData = await response.json();
     const messageElement = document.getElementById('usersWithMinMealPlansResultMsg');
     const tableBody = document.querySelector("#usersWithMinMealPlansTable tbody");
 
     if (responseData.success) {
-        if (responseData.length > 0) {
+        if (responseData.data.length > 0) {
             messageElement.textContent = "Users found";
         } else {
             messageElement.textContent = "No such users exist";
         }
         tableBody.innerHTML = '';
-        console.log(responseData)
         responseData.data.forEach((row) => {
             const newRow = tableBody.insertRow();
             newRow.innerHTML = `
