@@ -95,7 +95,8 @@ async function selectOverallRating(overallRating) {
         const result = await connection.execute(
             `SELECT ra.overallRating, ra.userID, re.name, re.author
              FROM rating ra, recipe re
-             WHERE ra.recipeID = re.ID AND overallRating >= :overallRating`,
+             WHERE ra.recipeID = re.ID AND overallRating >= :overallRating 
+             ORDER BY ra.OVERALLRATING`,
             [overallRating]
         );
 
@@ -115,7 +116,7 @@ async function selectOverallRating(overallRating) {
 async function getRecipeHasIngredientData() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT recipeID, ingredientName, quantity FROM RecipeHasIngredient`
+            `SELECT recipeID, ingredientName, quantity FROM RecipeHasIngredient ORDER BY recipeID`
         );
         return result.rows;
     });
