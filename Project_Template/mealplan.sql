@@ -184,6 +184,10 @@ INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES ('Shellfish', 
 INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES ('Shellfish', 4, 'Mild');
 INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES ('Strawberry', 4, 'Mild');
 INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES ('Tree Nuts', 4, 'Mild');
+INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES ('Shellfish', 5, 'Mild');
+INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES ('Dairy', 5, 'Mild');
+INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES ('Tree Nuts', 5, 'Mild');
+INSERT INTO UserHasAllergy (allergyType, userID, severity) VALUES ('Eggs', 5, 'Mild');
 
 
 INSERT INTO PremiumUser (userID, nutritionalAdvisorName) VALUES (1, 'Gordon Ramsay');
@@ -276,8 +280,5 @@ INSERT INTO USERCREATESMEALPLAN(userID, mealPlanID) VALUES (1, 4);
 INSERT INTO USERCREATESMEALPLAN(userID, mealPlanID) VALUES (2, 3);
 INSERT INTO USERCREATESMEALPLAN(userID, mealPlanID) VALUES (1, 5);
 INSERT INTO USERCREATESMEALPLAN(userID, mealPlanID) VALUES (3, 1);
-
-
-
 
 

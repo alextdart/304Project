@@ -158,9 +158,9 @@ async function totalCaloriesPerRecipe() {
              JOIN ingredientNutritionalInfo ini ON i.name = ini.name
              GROUP BY r.name`
         );
-        return result.rows; // Return rows directly
+        return result.rows;
     }).catch((error) => {
-        console.error("Database Error:", error); // Debugging
+        console.error("Database Error:", error);
         return null;
     });
 }
