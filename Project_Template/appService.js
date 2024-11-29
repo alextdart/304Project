@@ -152,7 +152,7 @@ async function getClientData() {
 async function totalCaloriesPerRecipe() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT r.name AS recipeName, SUM(ini.calories) AS totalCalories
+            `SELECT r.name AS recipeName, SUM(ri.QUANTITY * ini.calories) AS totalCalories
              FROM recipe r
              JOIN recipeHasIngredient ri ON r.ID = ri.recipeID
              JOIN ingredient i ON ri.ingredientName = i.name
