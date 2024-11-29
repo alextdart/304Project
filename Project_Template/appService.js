@@ -244,6 +244,7 @@ async function getRecipesWithCaloriesOver(calories) {
                 JOIN INGREDIENTNUTRITIONALINFO ini ON rhi.INGREDIENTNAME = ini.NAME
             GROUP BY r.NAME
             HAVING SUM(rhi.QUANTITY * ini.CALORIES) > ${caloriesAsNumber}
+            ORDER BY TotalCalories
         `);
         return result.rows;
     }).catch(() => {
@@ -301,6 +302,7 @@ async function getTotalNutrionalInfoInRecipesFromMealPlan(mealPlanID) {
                      JOIN INGREDIENTNUTRITIONALINFO ini ON rhi.INGREDIENTNAME = ini.NAME
             WHERE mp.MEALPLANID = ${mealPlanID}
             GROUP BY r.NAME
+            ORDER BY r.NAME
         `);
         return result.rows;
     }).catch(() => {
@@ -321,6 +323,7 @@ async function getRecipesWithAtleastOneIngredientInNumberOfRecipes(numRecipes) {
                 GROUP BY INGREDIENTNAME
                 HAVING COUNT(DISTINCT RECIPEID) >= ${numRecipes}
             )
+            ORDER BY r.NAME
         `);
         return result.rows;
     }).catch(() => {
