@@ -36,7 +36,7 @@
         RecipeID: <input type="number" id="insertRecipeID" placeholder="Enter Recipe ID" required> <br><br>
         Ingredient Name: <input type="text" id="insertIngredientName" placeholder="Enter Ingredient Name" maxlength="40" required> <br><br>
         Quantity: <input type="number" id="insertQuantity" placeholder="Enter Quantity"> <br><br>
-        <button type="submit"> insert </button> <br>
+        <button type="submit"> Insert Ingredient </button> <br>
     </form>
     <div id="insertIngredientResultMsg"></div>
 
@@ -137,7 +137,7 @@
             <option value="5">5</option>
         </select>
         <br><br>
-        <button id="selectOverallRatingButton"> Show Me </button> <br><br>
+        <button id="selectOverallRatingButton"> Fetch Recipes </button> <br><br>
     </form>
     <h3>Recipes</h3>
     <table id="recipesWithRating" border="1">
@@ -194,14 +194,14 @@
     <br><hr><br> <!-- ========================================================================= -->
 
     <h2>AGGREGATION with GROUP BY: Total Calories per Recipe</h2>
-    <button id="aggregateCalories"> Show Me </button> <br><br>
+    <button id="aggregateCalories"> Fetch Recipes </button> <br><br>
     <h3>Total Calories Per Recipe</h3>
     <table id="totalCaloriesPerRecipe" border="1">
         <thead>
         <tr>
             <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Recipes</th>
             <th>Calories</th>
-            <th>Recipe</th>
         </tr>
         </thead>
         <tbody>
@@ -232,7 +232,7 @@
     <br><hr><br> <!-- ========================================================================= -->
 
     <h2>DIVISION: Find Users with Every Allergy</h2>
-    <button id="findAllergicPeople"> Show Me </button> <br><br>
+    <button id="findAllergicPeople"> Fetch Users </button> <br><br>
     <h3>Users with Every Allergy</h3>
     <table id="allergicPeople" border="1">
         <thead>
